@@ -32,7 +32,7 @@ namespace Sewco.Modules.UserManagementEditor
         {
             InitializeComponent();
 
-            con = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\keese_000\Desktop\Sewco\Sewco2\Sewco\Sewco\UsermanagementDB.mdf;Integrated Security=True";
+            con = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C: \Users\keese_000\Desktop\AFSTUDEER STAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\KT4\REDO\Herkansing KT4\Herkansing - KT4\Sewco\UsermanagementDB.mdf;Integrated Security=True";
 
             ViewModelUsers ViewModelUsers = new ViewModelUsers();
             DataContext = ViewModelUsers;
@@ -291,7 +291,7 @@ namespace Sewco.Modules.UserManagementEditor
                     //}
                     //db.SubmitChanges();
 
-                    SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\keese_000\Desktop\Sewco\Sewco2\Sewco\Sewco\UsermanagementDB.mdf;Integrated Security=True");
+                    SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C: \Users\keese_000\Desktop\AFSTUDEER STAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\KT4\REDO\Herkansing KT4\Herkansing - KT4\Sewco\UsermanagementDB.mdf;Integrated Security=True");
                     con.Open();
                     SqlCommand cmd = new SqlCommand("DELETE FROM tbl_Users WHERE Name='" + name + "'", con);
                     cmd.ExecuteNonQuery();
