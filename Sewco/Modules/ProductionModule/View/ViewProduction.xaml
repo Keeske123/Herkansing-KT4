@@ -1,0 +1,632 @@
+﻿<UserControl x:Class="Sewco.Modules.ProductionModule.ViewProduction"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:extern="clr-namespace:Sewco.Resources.Helper_classes"
+        xmlns:pb="clr-namespace:PushBindingExtension"
+        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
+        xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+        xmlns:ns="clr-namespace:Sewco"
+        xmlns:intern="clr-namespace:Sewco.Modules.ProductionModule"
+        xmlns:p="clr-namespace:Sewco.Properties"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+      d:DesignHeight="1080" d:DesignWidth="1600" >
+    <!-- ":d3="clr-namespace:Microsoft.Research.DynamicDataDisplay;assembly=DynamicDataDisplay" -->
+    <UserControl.Resources>
+        
+        <ResourceDictionary>
+            <p:Resources x:Key="Resources"/>
+            <sys:String x:Key="languageFile">/Resources/Dutch.xaml</sys:String>
+            <extern:NotConverter x:Key="NotConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Xaml/Styles.xaml"/>
+                <!--<ResourceDictionary Source="{DynamicResource languageFile}"/> -->
+            </ResourceDictionary.MergedDictionaries>
+            
+        </ResourceDictionary>
+        
+    </UserControl.Resources>
+
+
+    <Grid Name="MainGrid" Height="Auto" Width="Auto" IsEnabled="true">
+        <!-- {Binding xEnableScreen} -->
+
+        <Border Background="#F9F9F9" BorderBrush="Gainsboro" BorderThickness="0" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="500"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource brMenu}" >
+                    <!-- Menu -->
+                    <Grid  Margin="20,20,20,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Button x:Name="btnError"    Grid.Row="0" Grid.Column="0"  Command="{Binding errorCommand}"  Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__errorsProd}" >
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource BtnStyleMenuProduction}">
+                                
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=xErrorActive}" Value="true">
+                                            <Setter Property="Background" Value="#D0112B" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style> 
+                        </Button>
+                        <Button x:Name="btnMaterial" Grid.Row="1" Grid.Column="0" Command="{Binding materialCommand}"  Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__materialsProd}" >
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource BtnStyleMenuProduction}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=xMaterialCheck}" Value="true">
+                                            <Setter Property="Background" Value="#D0112B" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <!--
+                        <Button x:Name="btnSTL"   Grid.Row="2" Grid.Column="0" Style="{StaticResource BtnStyle}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"     Content="STL" />
+                        <Button x:Name="btnFSPL"  Grid.Row="3" Grid.Column="0" Style="{StaticResource BtnStyle}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"     Content="FSPL" />
+                        <Button x:Name="btnSBT"   Grid.Row="4" Grid.Column="0" Style="{StaticResource BtnStyle}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"     Content="SBT" />
+                        <Button x:Name="btnEBT"   Grid.Row="5" Grid.Column="0" Style="{StaticResource BtnStyle}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"     Content="EBT" />
+                        -->
+                        <CheckBox x:Name="chkbxStartSewing" Grid.Row="3" Grid.Column="0"  Content="Pedal pressed" IsChecked="{Binding xStartSewing}" />
+                        <Button x:Name="btnReprint" Grid.Row="4" Grid.Column="0" Style="{StaticResource BtnStyleMenuProduction}"    Command="{Binding nextSeamCommand}"  Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__reprintProd}" IsEnabled="false" />
+                        <Button x:Name="btnReset"   Grid.Row="5" Grid.Column="0" Style="{StaticResource BtnStyleMenuProduction}"    Command="{Binding resetTrendCommand}"  Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__resetProd}" />
+
+                    </Grid>
+                </Border>
+
+                <Popup Name="PopupSubmenuError" IsOpen="{Binding xShowErrors}" Style="{StaticResource puPopUpSubmenu}"  PlacementTarget="{Binding ElementName=btnError}" MinWidth="300">
+                    <Border Style="{StaticResource brPopUp}">
+                        <!--<ItemsControl Grid.Row="1" ItemsSource="{Binding obcError}" HorizontalAlignment="Center">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Style="{StaticResource BtnStyleProductionSubmenu}" Content="{Binding sErrorLabel}"  ToolTip="{Binding sErrorDescription}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl> -->
+                        <ItemsControl ItemsSource="{Binding obcErrors}" HorizontalAlignment="Stretch">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Expander Style="{StaticResource epProduction}">
+                                        <Expander.Header>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition MinWidth="280"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding sErrorName}" Margin="20,0,0,0"/>
+                                                <Image Grid.Column="1" Style="{StaticResource imErrorProduction}"/>
+                                            </Grid>
+                                        </Expander.Header>
+                                        <StackPanel>
+                                            <TextBox Text="{Binding sErrorDescription}" IsEnabled="False" Style="{StaticResource tbExProduction}"/>
+                                        </StackPanel>
+                                    </Expander>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
+                </Popup>
+                <Popup Name="PopupSubmenuMaterial" IsOpen="{Binding xShowMaterials}" Style="{StaticResource puPopUpSubmenu}"  PlacementTarget="{Binding ElementName=btnMaterial}" MinWidth="300">
+                    <Border Style="{StaticResource brPopUp}">
+                        <ItemsControl ItemsSource="{Binding obcScannedMaterials}" HorizontalAlignment="Stretch">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Expander Style="{StaticResource epProduction}">
+                                        <Expander.Header>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition MinWidth="280"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding sMaterialTypeName}" Margin="20,0,0,0" HorizontalAlignment="Left"/>
+                                                <Image Grid.Column="1" Style="{StaticResource imMaterialCheck}" />
+                                            </Grid>
+                                        </Expander.Header>
+                                        <StackPanel>
+                                            <TextBox Text="{Binding sScannedMaterial}" IsEnabled="False" Style="{StaticResource tbExProduction}"/>
+                                        </StackPanel>
+                                    </Expander>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
+                </Popup>
+
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="450"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border  Grid.Row="0" Grid.Column="0" BorderThickness="0 0 0 0" BorderBrush="Black" IsEnabled="true">
+                        <Grid Grid.IsSharedSizeScope="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" SharedSizeGroup="FirstNameColumn"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column ="0" Width="auto" HorizontalContentAlignment="Center" Style="{StaticResource lblStyle}" Content=""/>
+                                <Label Grid.Row="0" Grid.Column ="1" HorizontalContentAlignment="Center" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__min}"/>
+                                <Label Grid.Row="0" Grid.Column ="2" HorizontalContentAlignment="Center" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__max}"/>
+                                <Label Grid.Row="0" Grid.Column ="3" HorizontalContentAlignment="Center" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tmin}"/>
+                                <Label Grid.Row="0" Grid.Column ="4" HorizontalContentAlignment="Center" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tmax}"/>
+                                <Label Grid.Row="0" Grid.Column ="5" HorizontalContentAlignment="Center" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__actstitch}"/>
+                                <Label Grid.Row="0" Grid.Column ="6" HorizontalContentAlignment="Center" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__stlen}"/>
+                            </Grid>
+                            
+                            <ListBox x:Name="ListBoxSeams" Grid.Row="1" 
+                                            ItemsSource                 = "{Binding clProductionSeamList5.obcItems}" 
+                                            SelectedValue               = "-1"
+                                            SelectedValuePath           = "{Binding iSelectedValuePath}"
+                                            HorizontalContentAlignment  = "Stretch"
+                                            FontSize                    = "18" 
+                                            BorderThickness             = "1"
+                                            BorderBrush="#10455A"
+                                            ScrollViewer.CanContentScroll ="False"
+                                            IsEnabled ="false"
+                                                SelectedIndex="{Binding clProductionSeamList5.iSelectedValue}"
+                                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                       
+                                     
+                                            >
+                     
+                                    <ListBox.Resources>
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}">Red</SolidColorBrush>
+
+                                    </ListBox.Resources>
+                                    
+                                    <ListBox.Style>
+                                        <Style TargetType="{x:Type ListBox}">
+                                            <Setter Property="Margin" Value="0,0,0,10" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Foreground" Value="LightGray" />
+                                                    <Setter Property="Background" Value="LightGray" />
+                                                    <Setter Property="BorderBrush" Value="{StaticResource testborder}" />
+                                                    <Setter Property="BorderThickness" Value="5" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ListBox.Style>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="Height" Value="{Binding iListboxItemHeight}" />
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Name="ListBoxSeamsColumns" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.xEditMode}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" SharedSizeGroup="FirstNameColumn"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="{Binding iListboxItemHeight}" >
+                                                    </RowDefinition>
+                                                </Grid.RowDefinitions>
+
+                                            <Label Grid.Column ="0" BorderThickness="0" Width="auto" Style="{StaticResource lblStyle}" Content="{Binding iSeamNumber}" VerticalContentAlignment="Center" HorizontalAlignment="Left"/>
+
+
+
+                                            <Button Grid.Column="1" Content="{Binding iMinStitches}">
+                                                    <Button.Style>
+                                                        <MultiBinding Converter="{StaticResource styleConverter}">
+                                                            <Binding Path="sStyleName"/>
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionFadeIn}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionActiveSeam}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionNoFade}" />
+                                                        </MultiBinding>
+                                                    </Button.Style>
+                                                </Button>
+
+                                                <Button Grid.Column="2" Content="{Binding iMaxStitches}">
+                                                    <Button.Style>
+                                                        <MultiBinding Converter="{StaticResource styleConverter}">
+                                                            <Binding Path="sStyleName"/>
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionFadeIn}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionActiveSeam}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionNoFade}" />
+                                                        </MultiBinding>
+                                                    </Button.Style>
+                                                </Button>
+
+                                                <Button Grid.Column="3" Content="{Binding iMinTension}">
+                                                    <Button.Style>
+                                                        <MultiBinding Converter="{StaticResource styleConverter}">
+                                                            <Binding Path="sStyleName"/>
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionFadeIn}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionActiveSeam}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionNoFade}" />
+                                                        </MultiBinding>
+                                                    </Button.Style>
+                                                </Button>
+
+                                                <Button Grid.Column="4" Content="{Binding iMaxTension}">
+                                                    <Button.Style>
+                                                        <MultiBinding Converter="{StaticResource styleConverter}" >
+                                                            <Binding Path="sStyleName"/>
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionFadeIn}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionActiveSeam}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionNoFade}" />
+                                                        </MultiBinding>
+                                                    </Button.Style>
+                                                </Button>
+
+                                                <Button Grid.Column="5"  Content="{Binding iActStitches}" >
+                                                    <Button.Style>
+                                                        <MultiBinding Converter="{StaticResource styleConverter}">
+                                                            <Binding Path="sStyleName"/>
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionFadeIn}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionActiveSeam}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionNoFade}" />
+                                                        </MultiBinding>
+                                                    </Button.Style>
+                                                </Button>
+
+                                                <Button Grid.Column="6"  Content="{Binding dStitchLength}">
+                                                    <Button.Style>
+                                                        <MultiBinding Converter="{StaticResource styleConverter}">
+                                                            <Binding Path="sStyleName"/>
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionFadeIn}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionActiveSeam}" />
+                                                            <Binding Source="{StaticResource BtnStyleSeamProductionNoFade}" />
+                                                        </MultiBinding>
+                                                    </Button.Style>
+                                                </Button>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                           
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="0" BorderThickness="0 0 0 0" BorderBrush="Black" IsEnabled="true">
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="400"/>
+                            </Grid.RowDefinitions>
+                            <Grid></Grid>
+                            <Rectangle  >
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="Azure" />
+                                </Rectangle.Fill>
+                                
+                            </Rectangle>
+
+
+                            <Button x:Name="btnETM"   Grid.Column="0" Style="{StaticResource BtnStyleFunction}"    Command="{Binding startTrendCommand}" Height="40"  Width="70"  IsEnabled="{Binding xFunction_ETM}"    Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ETM}" />
+                            <Button x:Name="btnHP"    Grid.Column="1" Style="{StaticResource BtnStyleFunction}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"  IsEnabled="{Binding xFunction_HP}"      Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__HP}" />
+                            <Button x:Name="btnSTL"   Grid.Column="2" Style="{StaticResource BtnStyleFunction}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"  IsEnabled="{Binding xFunction_STL}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__STL}" />
+                            <Button x:Name="btnFSPL"  Grid.Column="3" Style="{StaticResource BtnStyleFunction}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"  IsEnabled="{Binding xFunction_FSPL}"    Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__FSPL}" />
+                            <Button x:Name="btnSBT"   Grid.Column="4" Style="{StaticResource BtnStyleFunction}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"  IsEnabled="{Binding xFunction_SBT}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__SBT}" />
+                            <Button x:Name="btnEBT"   Grid.Column="5" Style="{StaticResource BtnStyleFunction}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"  IsEnabled="{Binding xFunction_EBT}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__EBT}" />
+                            <Button x:Name="btnLabel" Grid.Column="6" Style="{StaticResource BtnStyleFunction}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"  IsEnabled="{Binding xFunction_label}"   Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__label}" />
+                            <Button x:Name="btnScan"  Grid.Column="7" Style="{StaticResource BtnStyleFunction}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"  IsEnabled="{Binding xFunction_scan}"    Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__scan}" />
+                            
+                        </Grid>
+                        <!-- functions -->
+                    </Border>
+                </Grid>
+                <Border Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Style="{StaticResource brStatusBar}">
+                    <!-- status bar -->
+                    <extern:DataPiping.DataPipes>
+                        <extern:DataPipeCollection>
+                            <extern:DataPipe Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualWidth}"
+                                                         Target="{Binding Path=statusBar.dStatusSliderWidth, Mode=OneWayToSource}"/>
+                            <extern:DataPipe Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}"
+                                                         Target="{Binding Path=statusBar.dStatusSliderHeight, Mode=OneWayToSource}"/>
+                        </extern:DataPipeCollection>
+                    </extern:DataPiping.DataPipes>
+                    <Grid Width="200" VerticalAlignment="Top" HorizontalAlignment="center" Margin="20, 20, 20, 20" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition  Height="*"/>
+                        </Grid.RowDefinitions>
+
+
+                        <!--<ContentControl Grid.Row="4" Content="{StaticResource sourceTextBlock}"/>-->
+                        <Border Grid.Row="0" Grid.Column="0" Height="{Binding statusBar.dHeightStatusbar}" BorderBrush="#10455A" BorderThickness="2"  Margin="0, 8, 0, 8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="75"/>
+                                    <!--<ColumnDefinition Width="*"/>-->
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition  Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Column="0">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="35"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="{Binding statusBar.dHeightStatusSeamBlindArea}"/>
+                                        <RowDefinition Height="*"/>
+
+                                        <RowDefinition Height="{Binding statusBar.dHeightStatusSeamMinMax}"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" Grid.Column="0" Background="#C0C0C0" >
+
+                                        <Label Grid.Row="0" Grid.Column="2" Margin="-5,0,0,0" Content="0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                        <Label Grid.Row="0" Grid.Column="2" Margin="-5,0,0,0" Content="{Binding statusBar.iBlindArea}" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                                    </Grid>
+                                    <Grid Grid.Row="1" Grid.Column="0" Background="#D0112B" >
+
+
+                                    </Grid>
+                                    <Grid Grid.Row="2" Grid.Column="0" Background="#5EFF89">
+
+                                        <Label Grid.Row="0" Grid.Column="2" Margin="-5,0,0,0" Content="{Binding statusBar.iMinStitches}" VerticalAlignment="Top"    HorizontalAlignment="Center"/>
+                                        <Label Grid.Row="0" Grid.Column="2" Margin="-5,0,0,0" Content="{Binding statusBar.iMaxStitches}" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <Slider  Style="{StaticResource MyCustomStyleForSlider}" Grid.Row="0" Grid.Column="1" Height="{Binding statusBar.dHeightSlider}" Width="auto" HorizontalAlignment="left" UseLayoutRounding="True" IsDirectionReversed="True" Interval="1" IsEnabled="false" IsSnapToTickEnabled="True"  Background="Transparent" Orientation="Vertical" Cursor="Hand" Maximum="{Binding statusBar.decSliderMaximum}" Minimum="0"  Value="{Binding statusBar.iActStitch}" TickPlacement="TopLeft" TickFrequency="1" SmallChange="1" LargeChange="10" Ticks="{Binding statusBar.docSliderTicks}"  ></Slider>
+
+                        <Grid Grid.Row="0" Grid.Column="2" Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition  Height="{Binding statusBar.dHeightStatusbarLabel}"/>
+                                <RowDefinition  Height="{Binding statusBar.dHeightStatusbarScanback}"/>
+  
+                                <RowDefinition  Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0" Source="{Binding statusBar.sImagePathLabel}"    Width="50" Height="50"   IsEnabled="{Binding statusBar.xStatusLabelActive}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Style="{StaticResource statusbarIcon}"/>
+                            <Image Grid.Row="1" Source="{Binding statusBar.sImagePathScanback}" Width="50" Height="50"  IsEnabled="{Binding statusBar.xStatusScanbackActive}" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Style="{StaticResource statusbarIcon}"/>
+                        </Grid>
+                    </Grid>
+                    
+                </Border>
+               <!-- <GroupBox Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" Header="Status" Margin="20, 10, 20, 20" HorizontalContentAlignment="Center"> -->
+                <Grid Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" Margin="20, 20, 20, 20" >
+                    <!-- status icon -->
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="btnStatus"    Grid.Row="0" Style="{StaticResource BtnStyleFunction}"    Command="{Binding nextSeamCommand}" Height="40"  Width="70"  IsEnabled="{Binding xFunction_ETM}"    Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__status}" />
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding obcStatus}" HorizontalAlignment="Center">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Grid.Row="1"  Source="{Binding sImagePath}" IsEnabled="{Binding xActive}" Style="{StaticResource imageStatus}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </Grid>
+               <!-- </GroupBox> -->
+
+                <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,20,0,20">
+                    <TabItem Header="Actual">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__actualTension}" Grid.Row="0" Grid.Column="0" Style="{StaticResource lblStyle}"/>
+                            <Label Content="{Binding trend.dTrendAct}" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblStyle}" HorizontalAlignment="Right"/>
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tensionUnit}" Grid.Row="0" Grid.Column="2" Style="{StaticResource lblStyle}" HorizontalAlignment="Left"/>
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__averageTension}" Grid.Row="0" Grid.Column="4" Style="{StaticResource lblStyle}" />
+                            <Label Content="{Binding trend.dTrendAvg}" Grid.Row="0" Grid.Column="5" Style="{StaticResource lblStyle}" HorizontalAlignment="Right"/>
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tensionUnit}" Grid.Row="0" Grid.Column="6" Style="{StaticResource lblStyle}" HorizontalAlignment="Left"/>
+
+                            <!--<d3:ChartPlotter x:Name="plotter" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" Margin="20,20,20,20" >
+
+                                <d3:VerticalAxisTitle  Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tensionTrendYAxis}" />
+                                <d3:HorizontalAxisTitle Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tensionTrendXAxis}"/>
+                                <d3:HorizontalLine Value="{Binding trend.dTrendMax}" Stroke="Red" StrokeThickness="2"/>-->
+
+                                <!--<d3:LineGraph  x:Name="TrendData" Stroke="blue" DataSource="{Binding trend.obsTrendData}" >
+                                    <d3:ViewportElement2D.Description>
+                                        <d3:PenDescription DescriptionString="Actual tension"/>
+                                    </d3:ViewportElement2D.Description>
+                                </d3:LineGraph>
+                                <d3:LineGraph x:Name="TrendAverage" Stroke="Green" >
+
+                                    <d3:ViewportElement2D.Description>
+                                        <d3:PenDescription DescriptionString="Average tension"/>
+                                    </d3:ViewportElement2D.Description >
+                                </d3:LineGraph>
+                                <d3:HorizontalLine Value="{Binding trend.dTrendAvg}" Stroke="Green" StrokeThickness="2"/>
+                                <d3:HorizontalLine Value="{Binding trend.dTrendMin}" Stroke="Red" StrokeThickness="2"/>
+
+                            </d3:ChartPlotter>-->
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Gauss" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__actualTension}" Grid.Row="0" Grid.Column="0" Style="{StaticResource lblStyle}"/>
+                            <Label Content="{Binding trend.dTrendAct}" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblStyle}" HorizontalAlignment="Right"/>
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tensionUnit}" Grid.Row="0" Grid.Column="2" Style="{StaticResource lblStyle}" HorizontalAlignment="Left"/>
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__averageTension}" Grid.Row="0" Grid.Column="4" Style="{StaticResource lblStyle}" />
+                            <Label Content="{Binding trend.dTrendAvg}" Grid.Row="0" Grid.Column="5" Style="{StaticResource lblStyle}" HorizontalAlignment="Right"/>
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tensionUnit}" Grid.Row="0" Grid.Column="6" Style="{StaticResource lblStyle}" HorizontalAlignment="Left"/>
+<!--
+                            <dxc:ChartControl>
+                                <dxc:ChartControl.Diagram>
+                                    <dxc:XYDiagram2D>
+                                        <dxc:XYDiagram2D.Series>
+                                            <dxc:SplineSeries2D LineTension="0.8" MarkerSize="15"
+                                            MarkerVisible="True">
+                                                <dxc:SplineSeries2D.Label>
+                                                    <dxc:SeriesLabel ConnectorVisible="False"
+                                                 ResolveOverlappingMode="Default"                                                   
+                                                 Visible="True" />
+                                                </dxc:SplineSeries2D.Label>
+                                                <dxc:SplineSeries2D.Points>
+                                                    <dxc:SeriesPoint Argument="1/1/2005" Value="138.7" />
+                                                    <dxc:SeriesPoint Argument="2/1/2005" Value="141.4" />
+                                                    <dxc:SeriesPoint Argument="3/1/2005" Value="159.5" />
+                                                    <dxc:SeriesPoint Argument="4/1/2005" Value="160.7" />
+                                                    <dxc:SeriesPoint Argument="5/1/2005" Value="148.8" />
+                                                    <dxc:SeriesPoint Argument="6/1/2005" Value="166.6" />
+                                                </dxc:SplineSeries2D.Points>
+                                            </dxc:SplineSeries2D>
+                                        </dxc:XYDiagram2D.Series>
+                                        <dxc:XYDiagram2D.AxisX>
+                                            <dxc:AxisX2D GridLinesVisible="True"/>
+                                        </dxc:XYDiagram2D.AxisX>
+                                        <dxc:XYDiagram2D.AxisY>
+                                            <dxc:AxisY2D>
+                                                <dxc:AxisY2D.Title>
+                                                    <dxc:AxisTitle Content="Cents per Gallon" />
+                                                </dxc:AxisY2D.Title>
+                                                <dxc:AxisY2D.WholeRange>
+                                                    <dxc:Range dxc:AxisY2D.AlwaysShowZeroLevel="False" />
+                                                </dxc:AxisY2D.WholeRange>
+                                            </dxc:AxisY2D>
+                                        </dxc:XYDiagram2D.AxisY>
+                                    </dxc:XYDiagram2D>
+                                </dxc:ChartControl.Diagram>
+                                <dxc:ChartControl.Titles>
+                                    <dxc:Title Dock="Top" HorizontalAlignment="Center" Content="U.S. Fuel Oil Prices" />
+                                </dxc:ChartControl.Titles>
+                            </dxc:ChartControl>-->
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+
+                <!--<GroupBox  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tensionTrend}" Margin="20, 0, 0, 20" Style="{StaticResource grpBoxStyle}" >
+                
+                  <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__actualTension}" Grid.Row="0" Grid.Column="0" Style="{StaticResource lblStyle}"/>
+                        <Label Content="{Binding trend.dTrendAct}" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblStyle}" HorizontalAlignment="Right"/>
+                        <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tensionUnit}" Grid.Row="0" Grid.Column="2" Style="{StaticResource lblStyle}" HorizontalAlignment="Left"/>
+                        <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__averageTension}" Grid.Row="0" Grid.Column="4" Style="{StaticResource lblStyle}" />
+                        <Label Content="{Binding trend.dTrendAvg}" Grid.Row="0" Grid.Column="5" Style="{StaticResource lblStyle}" HorizontalAlignment="Right"/>
+                        <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__tensionUnit}" Grid.Row="0" Grid.Column="6" Style="{StaticResource lblStyle}" HorizontalAlignment="Left"/>
+
+                              
+                    </Grid>
+                </GroupBox>-->
+               
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

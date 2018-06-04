@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D1C9CE13-486F-4252-AF49-F91D83AD0B4D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sewco</RootNamespace>
+    <AssemblyName>Sewco</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>IconNaaimachine.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>F9A80F9D097F3EF9435F362052ECE8AD4392B9DC</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Sewco_1_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DynamicDataDisplay, Version=0.3.0.0, Culture=neutral, PublicKeyToken=5b7d744a7263923f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\DynamicDataDisplay.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.FP_CONNECTLib">
+      <HintPath>..\..\..\..\..\Google Drive\Habraken Armac\Sewco\Tools\Interop.FP_CONNECTLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="LinqToSQL.cs">
+      <DependentUpon>LinqToSQL.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="LinqToSQL.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LinqToSQL.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProductionModule\Model\ModelProduction.cs" />
+    <Compile Include="Modules\ProductionModule\ViewModel\ViewModelProduction.cs" />
+    <Compile Include="Modules\ProductionModule\View\ViewProductSelection.xaml.cs">
+      <DependentUpon>ViewProductSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProductionModule\View\ViewProduction.xaml.cs">
+      <DependentUpon>ViewProduction.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\UserManagementEditor\Model\ModelUsers.cs" />
+    <Compile Include="Modules\UserManagementEditor\ViewModel\ViewModelUserProfiles.cs" />
+    <Compile Include="Modules\UserManagementEditor\ViewModel\ViewModelUsers.cs" />
+    <Compile Include="Modules\UserManagementEditor\View\ViewUserProfiles.xaml.cs">
+      <DependentUpon>ViewUserProfiles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\UserManagementEditor\View\ViewUsers.xaml.cs">
+      <DependentUpon>ViewUsers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\__Configuration\Model\ModelConfiguration.cs" />
+    <Compile Include="Modules\__Configuration\ViewModel\ViewModelConfiguration.cs" />
+    <Compile Include="Modules\__Configuration\View\ViewConfiguration.xaml.cs">
+      <DependentUpon>ViewConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ControlPanel\Model\ModelControlPanel.cs" />
+    <Compile Include="Modules\ControlPanel\ViewModel\ViewModelControlPanel.cs" />
+    <Compile Include="Modules\ControlPanel\View\ViewControlPanel.xaml.cs">
+      <DependentUpon>ViewControlPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ControlPanel\View\ViewHomeScreen.xaml.cs">
+      <DependentUpon>ViewHomeScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\CoversEditor\Model\ModelCoversEditor.cs" />
+    <Compile Include="Modules\CoversEditor\ViewModel\ViewModelCoversEditor.cs" />
+    <Compile Include="Modules\CoversEditor\View\ViewCoversEditor.xaml.cs">
+      <DependentUpon>ViewCoversEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\__Header\ViewModel\ViewModelHeader.cs" />
+    <Compile Include="Modules\__Header\View\ViewHeader.xaml.cs">
+      <DependentUpon>ViewHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProductsEditor\Model\ModelProductsEditor.cs" />
+    <Compile Include="Modules\ProductsEditor\ViewModel\ViewModelProductsEditor.cs" />
+    <Compile Include="Modules\ProductsEditor\View\ViewProductsEditor.xaml.cs">
+      <DependentUpon>ViewProductsEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProfilesEditor\Model\ModelProfilesEditor.cs" />
+    <Compile Include="Modules\ProfilesEditor\ViewModel\ViewModelProfilesEditor.cs" />
+    <Compile Include="Modules\ProfilesEditor\View\ViewProfilesEditor.xaml.cs">
+      <DependentUpon>ViewProfilesEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\MaterialsEditor\Model\ModelMaterialsEditor.cs" />
+    <Compile Include="Modules\MaterialsEditor\ViewModel\ViewModelMaterialsEditor.cs" />
+    <Compile Include="Modules\MaterialsEditor\View\ViewMaterialsEditor.xaml.cs">
+      <DependentUpon>ViewMaterialsEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ProjectsEditor\Model\ModelProjectsEditor.cs" />
+    <Compile Include="Modules\ProjectsEditor\ViewModel\ViewModelProjectsEditor.cs" />
+    <Compile Include="Modules\ProjectsEditor\View\ViewProjectsEditor.xaml.cs">
+      <DependentUpon>ViewProjectsEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\TypesEditor\Model\ModelTypesEditor.cs" />
+    <Compile Include="Modules\TypesEditor\ViewModel\ViewModelTypesEditor.cs" />
+    <Compile Include="Modules\TypesEditor\View\ViewTypesEditor.xaml.cs">
+      <DependentUpon>ViewTypesEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Helper classes\Armac.cs" />
+    <Compile Include="Resources\Helper classes\StyleConverter.cs" />
+    <Compile Include="Resources\Helper classes\UserProfiles.cs" />
+    <Compile Include="Resources\Helper classes\_ConditionalEventTrigger.cs" />
+    <Compile Include="Resources\Helper classes\Converters.cs" />
+    <Compile Include="Resources\Helper classes\Dynamic.cs" />
+    <Compile Include="Resources\Helper classes\NotConverter.cs" />
+    <Compile Include="Resources\Helper classes\ObservableObject.cs" />
+    <Compile Include="Resources\Helper classes\RelayCommand.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Resources\PushBinding\FreezableBinding.cs" />
+    <Compile Include="Resources\PushBinding\PushBinding.cs" />
+    <Compile Include="Resources\PushBinding\PushBindingCollecion.cs" />
+    <Compile Include="Resources\PushBinding\PushBindingManager.cs" />
+    <Page Include="Modules\ProductionModule\View\ViewProduction.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\ProductionModule\View\ViewProductSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\UserManagementEditor\View\ViewUserProfiles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\UserManagementEditor\View\ViewUsers.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\__Configuration\View\ViewConfiguration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\ControlPanel\View\ViewControlPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\ControlPanel\View\ViewHomeScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\CoversEditor\View\ViewCoversEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\__Header\View\ViewHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\ProductsEditor\View\ViewProductsEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\ProfilesEditor\View\ViewProfilesEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\MaterialsEditor\View\ViewMaterialsEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\ProjectsEditor\View\ViewProjectsEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\TypesEditor\View\ViewTypesEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Xaml\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="LinqToSQL.dbml.layout">
+      <DependentUpon>LinqToSQL.dbml</DependentUpon>
+    </None>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="LinqToSQL.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>LinqToSQL.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Sewco_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modules\Main\Model\" />
+    <Folder Include="Modules\Main\ViewModel\" />
+    <Folder Include="Modules\Main\View\" />
+    <Folder Include="Modules\__Header\Model\" />
+    <Folder Include="Resources\Libraries\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\Images\Cars\Volvo\v40.jpg" />
+    <Resource Include="bin\Debug\Images\Cars\VW\polo.jpg" />
+    <Resource Include="bin\Debug\Images\Cars\Tesla\models_s_p96.jpg" />
+    <Resource Include="bin\Debug\Images\Cars\BMW\i8.jpg" />
+    <Resource Include="bin\Debug\Images\Cars\Citroën\cactus.jpg" />
+    <Resource Include="bin\Debug\Images\Cars\Peugeot\208.jpg" />
+    <Resource Include="bin\Debug\Languages\English.xml" />
+    <Resource Include="Resources\Images\DefaultImage\No_image_selected.png" />
+    <Resource Include="bin\Debug\Languages\Dutch.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\commonImages\delete.png" />
+    <Resource Include="Resources\Images\commonImages\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\commonImages\Database.png" />
+    <Resource Include="Resources\Images\commonImages\Home.png" />
+    <Resource Include="Resources\Images\commonImages\Login.png" />
+    <Resource Include="Resources\Images\commonImages\Logout.png" />
+    <Resource Include="Resources\Images\commonImages\Naaimachine.png" />
+    <Resource Include="Resources\Images\commonImages\Print.png" />
+    <Resource Include="Resources\Images\commonImages\Settings.png" />
+    <Resource Include="Resources\Images\commonImages\SewingMachine.png" />
+    <Resource Include="Resources\Images\commonImages\Statistics.png" />
+    <Resource Include="Resources\Images\commonImages\UserManagement.png" />
+    <Resource Include="IconNaaimachine.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Profile Test Images\Kristin_Profile2.jpg" />
+    <Resource Include="Resources\Images\Profile Test Images\untitled-20.jpg" />
+    <Content Include="UsermanagementDB.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UsermanagementDB_log.ldf">
+      <DependentUpon>UsermanagementDB.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\Images\commonImages\motor.png" />
+    <Resource Include="Resources\Images\commonImages\pedal.png" />
+    <Content Include="bin\Debug\DynamicDataDisplay.dll" />
+    <Resource Include="Resources\Images\commonImages\scanner.png" />
+    <Resource Include="Resources\Images\commonImages\Alert.png" />
+    <Resource Include="Resources\Images\commonImages\Ok.png" />
+    <Content Include="SewcoDB.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SewcoDB_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>SewcoDB.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="FP_CONNECTLib">
+      <Guid>{83E53ED4-FA50-4105-9DE0-915BA83FDF50}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

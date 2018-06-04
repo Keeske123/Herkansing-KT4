@@ -1,0 +1,526 @@
+﻿<UserControl x:Class="Sewco.Modules.ProductsEditor.ViewProductsEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:extern="clr-namespace:Sewco.Resources.Helper_classes"
+        xmlns:ns="clr-namespace:Sewco"
+        xmlns:intern="clr-namespace:Sewco.Modules.ProductsEditor"
+        xmlns:p="clr-namespace:Sewco.Properties"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+      d:DesignHeight="1080" d:DesignWidth="1600">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <p:Resources x:Key="Resources"/>
+            <sys:String x:Key="languageFile">/Resources/Dutch.xaml</sys:String>
+            <extern:NotConverter x:Key="NotConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Xaml/Styles.xaml"/>
+                <!--<ResourceDictionary Source="{DynamicResource languageFile}"/> -->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
+    <Grid Name="MainGrid" Height="Auto" Width="Auto" IsEnabled="{Binding xEnableScreen}">
+        <Popup Name="PopupCopyProduct" IsOpen="{Binding xShowPopupCopyObject}" PlacementTarget="{Binding ElementName=MainGrid}" Style="{StaticResource puPopUp}">
+            <Border Style="{StaticResource brPopUp}">
+                <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="300" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="10"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="0" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Style="{StaticResource lblStyle}" Grid.Row="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__puSelectMaterialToCopy}"/>
+                            <TextBox Style="{StaticResource tbSearchPopUp}" HorizontalAlignment="Right" Width="200"
+                                   Text="{Binding sfilterPopupCopyObject, UpdateSourceTrigger=PropertyChanged}" />
+
+                        </Grid>
+                        <ListBox Grid.Row="1" Grid.Column="1" 
+                            FontSize="14"
+                            ItemsSource="{Binding productsModel.obcCopyProducts}" 
+                            DisplayMemberPath="sDisplayName"
+                            SelectedValue="{Binding iCopyObjectSelectedValue}"
+                            SelectedValuePath="iSelectedvaluePath"/>
+                        <Button Grid.Row="3" Grid.Column="1" x:Name="btnCancelProductToCopyCommand" Style="{StaticResource BtnStyle}" HorizontalAlignment="Left"  Command="{Binding cancelCopyObjectCommand}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Cancel}"  Width="80" Height="40"/>
+                        <Button Grid.Row="3" Grid.Column="1" x:Name="btnSelectProductToCopyCommand" Style="{StaticResource BtnStyle}" HorizontalAlignment="Right"  Command="{Binding selectCopyObjectCommand}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__OK}"  Width="80" Height="40"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+
+        <Border Background="#F9F9F9" BorderBrush="Gainsboro" BorderThickness="0" >
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Column="0" BorderThickness="0 0 0 0" BorderBrush="Black" IsEnabled="true">
+                    <Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" >
+                                    <Button x:Name="btnNewProduct"      Style="{StaticResource BtnStyle}"   Command="{Binding newObjectCommand}"      Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__New}"/>
+                                    <Button x:Name="btnEditProduct"     Style="{StaticResource BtnStyle}"   Command="{Binding editObjectCommand}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Edit}"/>
+                                    <Button x:Name="btnDeleteProduct"   Style="{StaticResource BtnStyle}"   Command="{Binding deleteObjectCommand}"   Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Delete}"/>
+                                    <Button x:Name="btnCopyProduct"     Style="{StaticResource BtnStyle}"   Command="{Binding copyObjectCommand}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Copyfrom}"/>
+                                    <Button x:Name="btnCancelProduct"   Style="{StaticResource BtnStyle}"   Command="{Binding cancelObjectCommand}"   Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Cancel}"/>
+                                    <Button x:Name="btnSaveProduct"     Style="{StaticResource BtnStyle}"   Command="{Binding saveObjectCommand}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Save}"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Row="1" Style="{StaticResource GridStyle}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="512*" />
+                                    <ColumnDefinition Width="21*"/>
+                                    <ColumnDefinition Width="534*"/>
+                                    <ColumnDefinition Width="533*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource lblStyle}" HorizontalAlignment="Right"  Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Project}" Grid.ColumnSpan="2" Margin="0,3"/>
+                                <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource lblStyle}" HorizontalAlignment="Right"  Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProductsCode}" Grid.ColumnSpan="2" Margin="0,3"/>
+
+                                <TextBox Grid.Row="1" Grid.Column="2" Style="{StaticResource tbSearch}" 
+                                    IsEnabled="{Binding xEditObjectMode, Converter={StaticResource NotConverter}}" Width="Auto" Text="{Binding sSearchProjectList, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <ComboBox x:Name="cbbProjectSelect" Grid.Row="2" Grid.Column="2" Width="Auto"
+                                    FontSize="21"
+                                    Style="{StaticResource cbbStyleDefault}" 
+                                    ItemsSource="{Binding productsModel.clProjects.obcItems, Mode=OneWay}" 
+                                    DisplayMemberPath="sDisplayName"
+                                    SelectedValue="{Binding iProjectSelectedValue}"
+                                    SelectedValuePath="iSelectedvaluePath"
+                                    IsEnabled="{Binding xEditObjectMode,  Converter={StaticResource NotConverter}}">
+                                </ComboBox>
+                                <!--<TextBox MaxLength="30" x:Name="txbProductName" Grid.Row="3" Grid.Column="2" IsEnabled="{Binding xEditObjectMode}" Style="{StaticResource tbxStyleSeam}" Width="Auto" Text="{Binding productsModel.sCode, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"  />-->
+
+                                <Border Grid.Column="2" Grid.Row="3" DataContext="{Binding productsModel.sCode}" Style="{StaticResource bdErrorValidation}">
+                                    <TextBox x:Name="txbProductCode" Style="{StaticResource tbxErrorValidation}"
+                                            Text="{Binding Path=sInput, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=sErrorReport}" Width="Auto" VerticalAlignment="Center">
+                                    </TextBox>
+                                </Border>
+                                <ComboBox x:Name="cbbProductSelect" Grid.Row="3" Grid.Column="2" Width="Auto" IsEnabled="{Binding xEnableCbbProductsCode}"
+                                    FontSize="21"
+                                    Style="{StaticResource cbbStyleEnabledIsVisible}" 
+                                    ItemsSource="{Binding productsModel.obcProducts, Mode=OneWay}" 
+                                    DisplayMemberPath="sDisplayName"
+                                    SelectedValue="{Binding iObjectSelectedValue}"
+                                    SelectedValuePath="iSelectedvaluePath">
+                                </ComboBox>
+
+                                <CheckBox x:Name="cbProductActive" Grid.Row="2" Grid.Column="3" Style="{StaticResource cbStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProductActive}" IsEnabled="{Binding xEditObjectMode}" 
+                                     IsChecked="{Binding productsModel.active}" Margin="0,9">
+                                </CheckBox>
+
+                            </Grid>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" >
+                                    <Button  x:Name="btnFirstMaterial" Style="{StaticResource BtnStyle}" Command="{Binding firstMaterialCommand}" Content="First"/>
+                                    <Button  x:Name="btnLastMaterial" Style="{StaticResource BtnStyle}" Command="{Binding lastMaterialCommand}" Content="Last"/>
+                                </StackPanel> -->
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="1" IsEnabled ="{Binding xEditObjectMode}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="500*"/>
+                        <ColumnDefinition Width="500*"/>
+                        <ColumnDefinition Width="500*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="300*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Grid.Column="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="500*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="600*"/>
+                            <RowDefinition Height="300"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Grid.Column="0" Style="{StaticResource grpBoxStyle}" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProductsSettings}" IsEnabled="{Binding xEditObjectMode}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                   <!-- <RowDefinition Height="10*"/>
+                                    <RowDefinition Height="100*"/>-->
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150*" />
+                                    <ColumnDefinition Width="200*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__name}" Height="auto" VerticalAlignment="Center"/>
+                                <Label Grid.Column="0" Grid.Row="1" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__cover}"  Height="auto" VerticalAlignment="Center"/>
+                                <Label Grid.Column="0" Grid.Row="2" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__type}"   Height="auto" VerticalAlignment="Center"/>
+                                <!--<Label Grid.Column="0" Grid.Row="3" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__project}"  Height="auto" VerticalAlignment="Center"/> -->
+                                <Label Grid.Column="0" Grid.Row="3" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__profile}"  Height="auto" VerticalAlignment="Center"/>
+
+
+                                <Border Grid.Column="1" Grid.Row="0" DataContext="{Binding productsModel.sProductName}" Style="{StaticResource bdErrorValidation}">
+                                    <TextBox x:Name="tbcProductName" Style="{StaticResource tbxErrorValidation}"
+                                            Text="{Binding Path=sInput, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=sErrorReport}" Width="Auto" VerticalAlignment="Center">
+                                    </TextBox>
+                                </Border>
+
+                                <ComboBox x:Name="cbCover" Grid.Column="1" Grid.Row="1"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding productsModel.clCover.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding productsModel.clCover.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath" Width="Auto" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="cbType" Grid.Column="1" Grid.Row="2"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding productsModel.clType.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding productsModel.clType.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath" Width="Auto" VerticalAlignment="Center"/>
+                                <!--<ComboBox x:Name="cbProject" Grid.Column="1" Grid.Row="3"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding productsModel.clChosenProject.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding productsModel.clChosenProject.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath" Width="Auto" VerticalAlignment="Center"
+                                        IsEnabled="{Binding productsModel.clProject.xActive}"/> -->
+                                <ComboBox x:Name="cbProfile" Grid.Column="1" Grid.Row="3"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding productsModel.clProfile.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding productsModel.clProfile.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath" Width="Auto" VerticalAlignment="Center"/>
+                                
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Name="grpbxImage" Grid.Row="1" Grid.Column="0"  Style="{StaticResource grpBoxStyle}" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProductImage}" IsEnabled="{Binding xEditObjectMode}" BorderThickness="0" >
+                            <Grid Name="gridImage">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button  Grid.Row="0" Grid.Column="0" MinHeight="100" MinWidth="200" MaxHeight="270" MaxWidth="470" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" VerticalAlignment="top" IsEnabled="{Binding xEditObjectMode}" Background="Transparent"  Style="{StaticResource btnSelectImage}" x:Name="btnEditImagePath" Command="{Binding selectImagePathFolderCommand}">
+                                    <!-- http://stackoverflow.com/questions/6081800/wpf-rounded-corners-images -->
+                                    <StackPanel >
+                                        <Border Canvas.Left="55" IsEnabled="{Binding xEditObjectMode}"
+                                            Canvas.Top="30"
+                                            BorderBrush="#FF3B5998"
+                                            BorderThickness=".5"
+                                            CornerRadius="10"
+                                            MinWidth="{Binding MinWidth, ElementName=btnEditImagePath}"
+                                            MinHeight="{Binding MinHeight, ElementName=btnEditImagePath}"
+                                            MaxWidth="{Binding MaxWidth, ElementName=btnEditImagePath}"
+                                            MaxHeight="{Binding MaxHeight, ElementName=btnEditImagePath}">
+
+                                            <Border.Effect>
+                                                <DropShadowEffect BlurRadius="5" Opacity=".5" ShadowDepth="3" />
+                                            </Border.Effect>
+
+                                            <Border Name="ReceiverColor"  Style="{StaticResource imageBorder}" IsEnabled="{Binding xEditObjectMode}">
+                                                <Grid>
+                                                    <Border Name="Mask"
+                                                        Background="white"
+                                                        BorderBrush="#FF3B5998"
+                                                        BorderThickness=".5"
+                                                        CornerRadius="10"/>
+                                                    <StackPanel>
+                                                        <Image x:Name="image"  Source="{Binding productsModel.imagePath, UpdateSourceTrigger=PropertyChanged}" Width="{Binding Width, ElementName=btnEditImagePath}" Height="{Binding Height, ElementName=grpbxImage}" />
+                                                        <StackPanel.OpacityMask>
+                                                            <VisualBrush Visual="{Binding ElementName=Mask}" />
+                                                        </StackPanel.OpacityMask>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </Border>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </GroupBox>
+                        
+                        <!--<GroupBox Name="grpbxImage" Grid.Row="1" Grid.Column="0"  Style="{StaticResource grpBoxStyle}" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProductImage}" IsEnabled="{Binding xEditObjectMode}" BorderThickness="0" >
+                            <Grid Name="gridImage">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button  Grid.Row="0" Grid.Column="0" MinHeight="200" MinWidth="400" MaxHeight="300" MaxWidth="500" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" VerticalAlignment="top" IsEnabled="{Binding xEditObjectMode}" Background="Transparent"  Style="{StaticResource btnSelectImage}" x:Name="btnEditImagePath" Command="{Binding selectImagePathFolderCommand}">
+                                    <StackPanel >
+                                        <Border Canvas.Left="55" IsEnabled="{Binding xEditObjectMode}"
+                                        Canvas.Top="30"
+                                        BorderBrush="#FF3B5998"
+                                        BorderThickness=".5"
+                                        CornerRadius="10"
+                                        MinWidth="{Binding MinWidth, ElementName=btnEditImagePath}"
+                                        MinHeight="{Binding MinHeight, ElementName=btnEditImagePath}"
+                                        MaxWidth="{Binding MaxWidth, ElementName=btnEditImagePath}"
+                                        MaxHeight="{Binding MaxHeight, ElementName=btnEditImagePath}"                                               
+                                                >
+
+                                            <Border.Effect>
+                                                <DropShadowEffect BlurRadius="5"
+                                            Opacity=".5"
+                                            ShadowDepth="3" />
+                                            </Border.Effect>
+
+                                            <Border Name="ReceiverColor" BorderBrush="#FF96B2E4" BorderThickness="3" CornerRadius="10" IsEnabled="{Binding xEditObjectMode}">
+                                                <Grid>
+                                                    <Border Name="Mask"
+                                                    Background="white"
+                                                    BorderBrush="#FF3B5998"
+                                                    BorderThickness=".5"
+                                                    CornerRadius="10"
+                                                           />
+                                                    <StackPanel>
+                                                        <Image x:Name="image"  Source="{Binding productsModel.imagePath, UpdateSourceTrigger=PropertyChanged}" Width="{Binding Width, ElementName=btnEditImagePath}" Height="{Binding Height, ElementName=grpbxImage}" />
+                                                        <StackPanel.OpacityMask>
+                                                            <VisualBrush Visual="{Binding ElementName=Mask}" />
+                                                        </StackPanel.OpacityMask>
+                                                    </StackPanel>
+
+                                                </Grid>
+                                            </Border>
+
+                                        </Border>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </GroupBox> -->
+
+                    </Grid>
+                    <Grid Grid.Row="0" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="500*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Name="IOPositions" Grid.Row="0" Grid.Column="0" Style="{StaticResource grpBoxStyle}"  Header="__IOPositions">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <!--<Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__IOPositions}"  Height="auto" VerticalAlignment="Center" HorizontalAlignment="Center"/> -->
+
+                                <ListBox 
+                                            Grid.Column="0"             Grid.Row="1"
+                                            ItemsSource                 ="{Binding productsModel.obcIOPositions}"
+                                            SelectedValue               ="{Binding iIOPositionSelectedValue}"
+                                            SelectedValuePath           ="iIOPositionSelectedValuePath"
+                                            HorizontalContentAlignment  ="Left"
+                                            FontSize                    ="18"
+                                            ScrollViewer.CanContentScroll ="True">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" HorizontalAlignment="Left" Content="{Binding iIOPositionSelectedValue}"  VerticalAlignment="Center"/>
+                                                <Label Grid.Column="1" HorizontalAlignment="Left" Content="{Binding sMaterialTypeName}"         VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Name="MaterialSetting" Grid.Row="1" Grid.Column="0" Style="{StaticResource grpBoxStyle}"  Header="__ConnectedMaterials">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button x:Name="btnDeleteConnectedMaterial" Grid.Column="0" Grid.Row="0" Style="{StaticResource BtnAdd}"
+                                        Command="{Binding deleteAddedMaterialCommand}"
+                                        Width="35" Height="35" HorizontalAlignment="Right"
+                                        VerticalAlignment="Center">
+                                    <StackPanel>
+                                        <Image Source="/Resources/Images/commonImages/delete.png" Width="{Binding Width, ElementName=btnDeleteConnectedMaterial}" Height="{Binding Height, ElementName=btnDeleteConnectedMaterial}" />
+                                    </StackPanel>
+                                </Button>
+                                <ListBox x:Name="lbConnectedMaterials" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
+                                            ItemsSource                 = "{Binding productsModel.clShowAddedMaterials.obcItems}" 
+                                            SelectedValue               = "{Binding iAddedMaterialSelectedValue}"
+                                            SelectedValuePath           = "iSelectedvaluePath"
+                                            HorizontalContentAlignment  = "Stretch"
+                                            FontSize                    = "18" 
+                                            BorderThickness             = "1"
+                                            ScrollViewer.CanContentScroll ="True">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="1" HorizontalAlignment="Left" Content="{Binding sDisplayName}" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </GroupBox>
+                        
+                    </Grid>
+                    <Grid Grid.Row="0" Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="500*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Name="Test" Grid.Row="0" Grid.Column="0" Style="{StaticResource grpBoxStyle}"  Header="__AvailableNewMaterials">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <DockPanel Grid.Column="2" Grid.Row="0" VerticalAlignment="Center">
+                                    <Button x:Name="btnAddNewMaterial" Style="{StaticResource BtnAdd}"
+                                            Command="{Binding addNewMaterialCommand}"
+                                            Width="40" Height="40" HorizontalAlignment="Left"
+                                            VerticalAlignment="Center">
+                                        <StackPanel>
+                                            <Image Source="/Resources/Images/commonImages/add.png" Width="{Binding Width, ElementName=btnAddNewMaterial}" Height="{Binding Height, ElementName=btnAddNewMaterial}" />
+                                        </StackPanel>
+                                    </Button>
+                                    <TextBox Style="{StaticResource tbSearch}" Width="Auto" Text="{Binding sSearchMaterialList, UpdateSourceTrigger=PropertyChanged}" />
+                                </DockPanel>
+                                <ListBox Grid.Column="0"             Grid.Row="1" Grid.ColumnSpan="2"
+                                        ItemsSource                 = "{Binding productsModel.clAvailableMaterials.obcItems}" 
+                                        SelectedValue               = "{Binding iAvailableNewMaterialSelectedValue}"
+                                        SelectedValuePath           = "iSelectedvaluePath"
+                                        HorizontalContentAlignment  ="Left"
+                                        FontSize                    ="18"
+                                        ScrollViewer.CanContentScroll ="True">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="1" HorizontalAlignment="Left" Content="{Binding sDisplayName}" VerticalAlignment="Center"/>
+                                                <Label Grid.Column="0" HorizontalAlignment="Left" Content="{Binding iSelectedvaluePath}" VerticalAlignment="Center"/>
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+                                <ListBox Grid.Column="0"             Grid.Row="2" Grid.ColumnSpan="2"
+                                        ItemsSource                 = "{Binding productsModel.clAvailableMaterials_temp.obcItems}" 
+                                        SelectedValue               = "{Binding iAvailableNewMaterialSelectedValue}"
+                                        SelectedValuePath           = "iSelectedvaluePath"
+                                        HorizontalContentAlignment  ="Left"
+                                        FontSize                    ="18">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding sDisplayName}" Opacity="0" FontSize="26">
+                                                <TextBlock.Triggers>
+                                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     Duration="00:00:02"
+                                                                     From="0"
+                                                                     To="1" />  
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                    <EventTrigger RoutedEvent="FrameworkElement.Unloaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="00:00:02" From="1" To="0" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </TextBlock.Triggers>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

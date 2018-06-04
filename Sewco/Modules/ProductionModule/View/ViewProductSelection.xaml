@@ -1,0 +1,284 @@
+﻿<UserControl x:Class="Sewco.Modules.ProductionModule.ViewProductSelection"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:extern="clr-namespace:Sewco.Resources.Helper_classes"
+        xmlns:ns="clr-namespace:Sewco"
+        xmlns:intern="clr-namespace:Sewco.Modules.ProductionModule"
+        xmlns:p="clr-namespace:Sewco.Properties"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+      d:DesignHeight="1080" d:DesignWidth="1600">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <p:Resources x:Key="Resources"/>
+            <sys:String x:Key="languageFile">/Resources/Dutch.xaml</sys:String>
+            <extern:NotConverter x:Key="NotConverter" />
+            <extern:VisibilityConverter x:Key="VisibilityConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Xaml/Styles.xaml"/>
+                <!--<ResourceDictionary Source="{DynamicResource languageFile}"/> -->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="#FCFCFC">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Grid.Column="0" Name="grpbxProjectSelection" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjSelection}" Style="{StaticResource grpBoxStyle}">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjFilter}" Grid.Row="1" Grid.Column="0"  Style="{StaticResource lblStyle}"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Height="50" Text="{Binding sFilterProject, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource tbxStandard}" />
+                <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjSelected}" Grid.Row="2" Grid.Column="0" Style="{StaticResource lblStyle}"/>
+                <ComboBox x:Name="cbbProjectSelect" Grid.Row="2" Grid.Column="1" Width="Auto" Height="50"
+                                FontSize="21"
+                                Style="{StaticResource cbbStyleEnabledIsVisible}" 
+                                ItemsSource="{Binding productSelection.clAvailableProjects.obcItems, Mode=OneWay}"
+                                DisplayMemberPath="sDisplayName"
+                                SelectedValue="{Binding iProjectSelectedValue}"
+                                SelectedValuePath="iSelectedvaluePath"/>
+
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Grid.Column="0" Name="grpbxProductSelection" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdSelection}" Style="{StaticResource grpBoxStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="1" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdFilter}"  Style="{StaticResource lblStyle}"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Height="50" x:Name="FilterProduct" Text="{Binding sFilterProduct, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource tbxStandard}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding enterFilterProductCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Label Grid.Row="2" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdSelected}"  Style="{StaticResource lblStyle}"/>
+                <ComboBox Grid.Row="2"  Grid.Column="1" x:Name="cbbProductSelect" Width="Auto" Height="50"
+                                    FontSize="21"
+                                    Style="{StaticResource cbbStyleEnabledIsVisible}" 
+                                    ItemsSource="{Binding productSelection.clAvailableProducts.obcItems}" 
+                                    DisplayMemberPath="sDisplayName"
+                                    SelectedValue="{Binding iProductSelectedValue}"
+                                    SelectedValuePath="iSelectedvaluePath"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdBatch}"  Style="{StaticResource lblStyle}" Visibility="{Binding productSelection.selectedProjectInfo.xUseLotNumber, Converter={StaticResource VisibilityConverter}}"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Height="50" x:Name="Batchnumber" Visibility="{Binding productSelection.selectedProjectInfo.xUseLotNumber, Converter={StaticResource VisibilityConverter}}" Text="{Binding productSelection.sBatchnumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource tbxStandard}" />
+
+                <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdBatchDone}"  Style="{StaticResource lblStyle}" Visibility="{Binding productSelection.selectedProjectInfo.xBatchMode, Converter={StaticResource VisibilityConverter}}"/>
+                    <Border Grid.Row="0" Grid.Column="1" Height="50"  x:Name="BatchDone" Visibility="{Binding RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type UserControl}}, Path=DataContext.productSelection.selectedProjectInfo.xBatchMode, Converter={StaticResource VisibilityConverter}}" DataContext="{Binding productSelection.batchDone}"  Style="{StaticResource bdErrorValidation}">
+                        <TextBox x:Name="tbCode" Style="{StaticResource tbxErrorValidation}" Height="50"
+                                            Text="{Binding RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type UserControl}}, Path=DataContext.productSelection.sBatchDone, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=sErrorReport}" Width="Auto" VerticalAlignment="Center">
+                        </TextBox>
+                     </Border>
+
+                    <Label Grid.Row="0" Grid.Column="2" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdBatchSize}" Style="{StaticResource lblStyle}" Visibility="{Binding productSelection.selectedProjectInfo.xBatchMode, Converter={StaticResource VisibilityConverter}}"/>
+                    <Border Grid.Row="0" Grid.Column="3" Height="50"  x:Name="BatchSize" Visibility="{Binding RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type UserControl}}, Path=DataContext.productSelection.selectedProjectInfo.xBatchMode, Converter={StaticResource VisibilityConverter}}" DataContext="{Binding productSelection.batchSize}" Style="{StaticResource bdErrorValidation}">
+                        <TextBox x:Name="tbBatchSize" Style="{StaticResource tbxErrorValidation}" Height="50"
+                                            Text="{Binding RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type UserControl}}, Path=DataContext.productSelection.sBatchSize, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=sErrorReport}" Width="Auto" VerticalAlignment="Center">
+                        </TextBox>
+                    </Border>
+                   
+                </Grid>
+                
+                <Button x:Name="btnTest" Style="{StaticResource BtnStyle}"   Command="{Binding btnTest}" Content="AUTO SELECT" Margin="1051,8,-910,17" Grid.Row="5" RenderTransformOrigin="10.408,0.183" Grid.Column="1"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="0" Grid.Column="1" Name="grpbxProject" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjInfo}" Style="{StaticResource grpBoxStyle}" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjMachineID}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="0" Grid.Column="1" Content="{Binding productSelection.selectedProjectInfo.sMachineId}"  Style="{StaticResource lblStyle}" />
+                <Label Grid.Row="1" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjPlanID}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="1" Grid.Column="1" Content="{Binding productSelection.selectedProjectInfo.sPlantId}"  Style="{StaticResource lblStyle}"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjPlantInfo}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="2" Grid.Column="1" Content="{Binding productSelection.selectedProjectInfo.sPlantInfo}"  Style="{StaticResource lblStyle}"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjCustomerID}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="3" Grid.Column="1" Content="{Binding productSelection.selectedProjectInfo.sCustomerId}"  Style="{StaticResource lblStyle}"/>
+                <Label Grid.Row="4" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjCustomerInfo}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="4" Grid.Column="1" Content="{Binding productSelection.selectedProjectInfo.sCustomerInfo}"  Style="{StaticResource lblStyle}"/>
+                <Label Grid.Row="5" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjProductionMode}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="5" Grid.Column="1" Content="{Binding productSelection.selectedProjectInfo.sProductionMode}"  Style="{StaticResource lblStyle}"/>
+                <Label Grid.Row="6" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjCounterReset}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="6" Grid.Column="1" Content="{Binding productSelection.selectedProjectInfo.sCounterReset}"  Style="{StaticResource lblStyle}"/>
+                <Label Grid.Row="7" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProjProductionCode}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="7" Grid.Column="1" Content="{Binding productSelection.selectedProjectInfo.sProductionCode}"  Style="{StaticResource lblStyle}"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Grid.Column="1" Name="grpbxProduct" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdInfo}" Style="{StaticResource grpBoxStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdName}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="0" Grid.Column="1" Content="{Binding productSelection.selectedProductInfo.sName}"  Style="{StaticResource lblStyle}" />
+                <Label Grid.Row="1" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdCover}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="1" Grid.Column="1" Content="{Binding productSelection.selectedProductInfo.sCover}"  Style="{StaticResource lblStyle}"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdType}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="2" Grid.Column="1" Content="{Binding productSelection.selectedProductInfo.sType}"  Style="{StaticResource lblStyle}"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProdProfile}"  Style="{StaticResource lblStyle}" HorizontalContentAlignment="Right"/>
+                <Label Grid.Row="3" Grid.Column="1" Content="{Binding productSelection.selectedProductInfo.sProfile}"  Style="{StaticResource lblStyle}"/>
+
+            </Grid>
+        </GroupBox>
+        <Border x:Name="projectImageBorder" Grid.Row="0" Grid.Column="2" Style="{StaticResource imageBorder}" Width="300" Height="200">
+            <Grid>
+                <Border Name="MaskProjectImage"
+                                                        Background      ="white"
+                                                        BorderBrush     ="#FF3B5998"
+                                                        BorderThickness =".5"
+                                                        CornerRadius    ="10"/>
+                <StackPanel>
+                    <Image x:Name="projectImage"  Source="{Binding productSelection.selectedProjectInfo.sProjectImagePath, UpdateSourceTrigger=PropertyChanged}" Width="{Binding ElementName=projectImageBorder, Path=Width}" Height="{Binding ElementName=projectImageBorder, Path=Height}" />
+                    <StackPanel.OpacityMask>
+                        <VisualBrush Visual="{Binding ElementName=MaskProjectImage}" />
+                    </StackPanel.OpacityMask>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Grid.Column="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="70" />
+            </Grid.RowDefinitions>
+
+            <Border x:Name="productImageBorder" Grid.Row="0" Style="{StaticResource imageBorder}" Width="300" Height="200" >
+                <Grid>
+                    <Border Name="MaskProductImage"
+                                                        Background      ="white"
+                                                        BorderBrush     ="#FF3B5998"
+                                                        BorderThickness =".5"
+                                                        CornerRadius    ="10"/>
+                    <StackPanel>
+                        <Image x:Name="productImage"  Source="{Binding productSelection.selectedProductInfo.sProductImagePath, UpdateSourceTrigger=PropertyChanged}" Width="{Binding ElementName=productImageBorder, Path=Width}" Height="{Binding ElementName=productImageBorder, Path=Height}" />
+                        <StackPanel.OpacityMask>
+                            <VisualBrush Visual="{Binding ElementName=MaskProductImage}" />
+                        </StackPanel.OpacityMask>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Button x:Name="btnEnterProduction" Grid.Row="1" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__StartProduction}" Command="{Binding showProductionScreenCommand}" Style="{StaticResource BtnStyle}" HorizontalAlignment="Right" Width="Auto"/>
+        </Grid>
+
+
+
+        <!--
+        <Label Content="Product selection" Grid.Row="0" />
+
+        <TextBox Grid.Row="0" Text="{Binding productSelection.sFilterProject, UpdateSourceTrigger=PropertyChanged}" />
+        
+        <ComboBox x:Name="cbbProjectSelect" Grid.Row="1" Grid.Column="0" Width="Auto"
+                                    FontSize="21"
+                                    Style="{StaticResource cbbStyleEnabledIsVisible}" 
+                                    ItemsSource="{Binding productSelection.clAvailableProjects.obcItems, Mode=OneWay}"
+                                    DisplayMemberPath="sDisplayName"
+                                    SelectedValue="{Binding productSelection.iProjectSelectedValue}"
+                                    SelectedValuePath="iSelectedvaluePath"/>
+
+        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource imageBorder}" Width="200" Height="200">
+            <Grid>
+                <Border Name="MaskProjectImage"
+                                                        Background      ="white"
+                                                        BorderBrush     ="#FF3B5998"
+                                                        BorderThickness =".5"
+                                                        CornerRadius    ="10"/>
+                <StackPanel>
+                    <Image x:Name="projectImage"  Source="{Binding productSelection.sProjectImagePath, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="200" />
+                    <StackPanel.OpacityMask>
+                        <VisualBrush Visual="{Binding ElementName=MaskProjectImage}" />
+                    </StackPanel.OpacityMask>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <TextBox x:Name="FilterProduct" Grid.Row="2" Text="{Binding productSelection.sFilterProduct, UpdateSourceTrigger=PropertyChanged}" />
+        <ComboBox x:Name="cbbProductSelect" Grid.Row="3" Width="Auto"
+                                    FontSize="21"
+                                    Style="{StaticResource cbbStyleEnabledIsVisible}" 
+                                    ItemsSource="{Binding productSelection.clAvailableProducts.obcItems}" 
+                                    DisplayMemberPath="sDisplayName"
+                                    SelectedValue="{Binding productSelection.iProductSelectedValue}"
+                                    SelectedValuePath="iSelectedvaluePath"/>
+
+        <TextBox Grid.Row="6" Text="{Binding sTest, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Border Grid.Row="6" Grid.Column="2" Style="{StaticResource imageBorder}" Width="200" Height="200">
+            <Grid>
+                <Border Name="MaskProductImage"
+                                                        Background      ="white"
+                                                        BorderBrush     ="#FF3B5998"
+                                                        BorderThickness =".5"
+                                                        CornerRadius    ="10"/>
+                <StackPanel>
+                    <Image x:Name="productImage"  Source="{Binding productSelection.sProductImagePath, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="200" />
+                    <StackPanel.OpacityMask>
+                        <VisualBrush Visual="{Binding ElementName=MaskProductImage}" />
+                    </StackPanel.OpacityMask>
+                </StackPanel>
+            </Grid>
+        </Border>-->
+
+    </Grid>
+</UserControl>

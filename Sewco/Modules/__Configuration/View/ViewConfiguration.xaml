@@ -1,0 +1,60 @@
+﻿<Window x:Class="Sewco.Modules.Configuration.ViewConfiguration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sewco.Modules.Configuration"
+        mc:Ignorable="d"
+        Title="Sewco editor"
+        ResizeMode="CanResize"  
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" Height="900" Width="1600">
+    <Window.Resources>
+        <ResourceDictionary Source="/Resources/Xaml/Styles.xaml"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Background="#F9F9F9" Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Row="0" Grid.Column="0" x:Name="PageProjectsEditor"    Height="auto" Style="{StaticResource BtnStyleMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Projects}" Click="PageProjectsEditor_Click" HorizontalAlignment="Left" Width="100" FontSize="20" Margin="5,0,0,0" IsEnabled="{Binding xEnableProjectMenu}"/>
+            <Button Grid.Row="1" Grid.Column="0" x:Name="PageProductEditor"     Height="auto" Style="{StaticResource BtnStyleMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Products}" Click="PageProductsEditor_Click"  HorizontalAlignment="Left" Width="100" FontSize="20" Margin="5,5,0,0" IsEnabled="{Binding xEnableProductMenu}"/>
+            <Button Grid.Row="2" Grid.Column="0" x:Name="PageProfilesEditor"    Height="auto" Style="{StaticResource BtnStyleMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Profiles}" Click="PageProfilesEditor_Click"  HorizontalAlignment="Left" Width="100" FontSize="20" Margin="5,5,0,0" IsEnabled="{Binding xEnableProfileMenu}"/>
+            <Button Grid.Row="3" Grid.Column="0" x:Name="PageTypesEditor"       Height="auto" Style="{StaticResource BtnStyleMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Types}"    Click="PageTypesEditor_Click"  HorizontalAlignment="Left" Width="100" FontSize="20" Margin="5,5,0,0" IsEnabled="{Binding xEnableTypesMenu}"/>
+            <Button Grid.Row="4" Grid.Column="0" x:Name="PageCoversEditor"      Height="auto" Style="{StaticResource BtnStyleMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Covers}"   Click="PageCoversEditor_Click"  HorizontalAlignment="Left" Width="100" FontSize="20" Margin="5,5,0,0" IsEnabled="{Binding xEnableCoversMenu}"/>
+            <Button Grid.Row="5" Grid.Column="0" x:Name="PageMaterialsEditor"   Height="auto" Style="{StaticResource BtnStyleMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Materials}" Click="PageMaterialsEditor_Click"  HorizontalAlignment="Left" Width="100" FontSize="20" Margin="5,5,0,0" IsEnabled="{Binding xEnableMaterialMenu}"/>
+            <Button Grid.Row="6" Grid.Column="0" x:Name="PageSettings"          Height="auto" Style="{StaticResource BtnStyleMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Settings}" Click="PageProfilesEditor_Click"  HorizontalAlignment="Left" Width="100" FontSize="20" Margin="5,5,0,0" IsEnabled="True"/>
+        </Grid>
+        <Grid  Grid.Row="0" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Frame Background="#F9F9F9" x:Name="FrameContent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden" BorderThickness="0"/>
+        </Grid>
+
+
+    </Grid>
+</Window>

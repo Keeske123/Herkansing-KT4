@@ -1,0 +1,663 @@
+﻿<UserControl x:Class="Sewco.Modules.ProfilesEditor.ViewProfilesEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sewco.Modules.ProfilesEditor"
+        xmlns:extern="clr-namespace:Sewco.Resources.Helper_classes"
+        xmlns:ns="clr-namespace:Sewco"
+        xmlns:p="clr-namespace:Sewco.Properties"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        d:DesignHeight="900" d:DesignWidth="1600">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Xaml/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary> 
+    </UserControl.Resources>
+
+    <Grid Name="MainGrid" Height="Auto" Width="Auto" IsEnabled="{Binding xEnableScreen}">
+        <Popup Name="PopupCopyProfile" IsOpen="{Binding xShowPopupCopyProfile}" PlacementTarget="{Binding ElementName=MainGrid}" Style="{StaticResource puPopUp}">
+            <Border Style="{StaticResource brPopUp}">
+                <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="300" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="10"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="0" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Style="{StaticResource lblStyle}" Grid.Row="0" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__puSelectProfileToCopy}"/>
+                            <TextBox Style="{StaticResource tbSearchPopUp}" HorizontalAlignment="Right" Width="200"
+                                   Text="{Binding sfilterPopupCopyProfile, UpdateSourceTrigger=PropertyChanged}" />
+
+                        </Grid>
+                        <ListBox Grid.Row="1" Grid.Column="1" 
+                            FontSize="14"
+                            ItemsSource="{Binding obcCopyProfileOption, Mode=TwoWay}" 
+                            DisplayMemberPath="sDisplayName"
+                            SelectedValue="{Binding iCopyProfileSelectedValue}"
+                            SelectedValuePath="iSelectedvaluePath"/>
+                        <Button Grid.Row="3" Grid.Column="1" x:Name="btnCancelProfiletoCopyCommand" Style="{StaticResource BtnStyle}" HorizontalAlignment="Left"  Command="{Binding cancelCopyProfileCommand}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Cancel}"  Width="80" Height="40"/>
+                        <Button Grid.Row="3" Grid.Column="1" x:Name="btnSelectProfiletoCopyCommand" Style="{StaticResource BtnStyle}" HorizontalAlignment="Right"  Command="{Binding selectCopyProfileCommand}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__OK}"  Width="80" Height="40"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
+        <Popup Name="PopupCopySeamTemplate" IsOpen="{Binding xShowPopupCopySeamTemplate}" PlacementTarget="{Binding ElementName=MainGrid}" Style="{StaticResource puPopUp}">
+            <Border Style="{StaticResource brPopUp}">
+                <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="300" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="10"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Row="0" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__puSelectSeamEdit}" Width="Auto" HorizontalAlignment="Left"/>
+                            <TextBox Style="{StaticResource tbSearchPopUp}" HorizontalAlignment="Right" Width="200"
+                                   Text="{Binding sfilterPopupCopySeamTemplate, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+                        <ListBox Grid.Row="1" Grid.Column="1" 
+                            FontSize="14"
+                            ItemsSource="{Binding obcCopySeamTemplateOption, Mode=TwoWay}" 
+                            DisplayMemberPath="sDisplayName"
+                            SelectedValue="{Binding iCopySeamTemplateSelectedValue}"
+                            SelectedValuePath="iSelectedvaluePath"/>
+                        <Button Grid.Row="3" Grid.Column="1" x:Name="btnCancelPopupCopySeamTemplateCommand" Style="{StaticResource BtnStyle}" HorizontalAlignment="Left"  Command="{Binding cancelCopySeamTemplateCommand}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Cancel}"  Width="80" Height="40"/>
+                        <Button Grid.Row="2" Grid.Column="1" x:Name="btnSelectPopupCopySeamTemplateCommand" Style="{StaticResource BtnStyle}" HorizontalAlignment="Right"  Command="{Binding selectCopySeamTemplateCommand}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__OK}"  Width="80" Height="40" Margin="0,0,0,5" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
+        <Popup Name="PopupEnterNameSeamTemplate" IsOpen="{Binding xShowPopupEditSeamTemplate}" PlacementTarget="{Binding ElementName=MainGrid}" Style="{StaticResource puPopUp}">
+            <Border Style="{StaticResource brPopUp}">
+                <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="300" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="10"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Style="{StaticResource lblStyle}" Grid.Row="0" Grid.Column="1"  Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__askFollowingProfiles}"/>
+                        <ListView Grid.Row="1" Grid.Column="1" 
+                            FontSize="14" 
+                            ItemsSource="{Binding obcEditSeamTemplateInProfiles, Mode=TwoWay}" 
+                            DisplayMemberPath="sDisplayName"/>
+                        <Label Style="{StaticResource lblStyle}" Grid.Row="2" Grid.Column="1" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__askEditSeam}"/>
+                        <Button Grid.Row="4" Grid.Column="1" x:Name="btnCancelPopupEditSeamTemplate" Style="{StaticResource BtnStyle}" HorizontalAlignment="Left"  Command="{Binding cancelPopupEditSeamTemplateCommand}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__No}"  Width="80" Height="40"/>
+                        <Button Grid.Row="3" Grid.Column="1" x:Name="btnOKPopupEditSeamTemplate" Style="{StaticResource BtnStyle}" HorizontalAlignment="Right"  Command="{Binding okPopupEditSeamTemplateCommand}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Yes}"  Width="80" Height="40" Margin="0,0,0,5" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <Border Background="#F9F9F9" BorderBrush="Gainsboro" BorderThickness="0" Height="Auto" Width="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Column="0" BorderThickness="0 0 0 0" BorderBrush="Black" IsEnabled="{Binding xSeamTemplateEditMode, Converter={StaticResource NotConverter}}">
+                    <Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" >
+                                    <Button x:Name="btnNewProfile" Style="{StaticResource BtnStyle}"    Command="{Binding newProfileCommand}"       Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__New}" />
+                                    <Button x:Name="btnEditProfile" Style="{StaticResource BtnStyle}"   Command="{Binding editProfileCommand}"      Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Edit}"/>
+                                    <Button x:Name="btnDeleteProfile" Style="{StaticResource BtnStyle}" Command="{Binding deleteProfileCommand}"    Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Delete}"/>
+                                    <Button x:Name="btnCopyProfile" Style="{StaticResource BtnStyle}"   Command="{Binding copyProfileCommand}"      Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Copyfrom}"/>
+                                    <Button x:Name="btnCancelProfile" Style="{StaticResource BtnStyle}" Command="{Binding cancelProfileCommand}"    Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Cancel}"/>
+                                    <Button x:Name="btnSaveProfile" Style="{StaticResource BtnStyle}"   Command="{Binding saveProfileCommand}"      Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Save}"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Row="1" Style="{StaticResource GridStyle}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource lblStyle}" HorizontalAlignment="Right" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProfileName}"/>
+                                <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource lblStyle}" HorizontalAlignment="Right" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProfileComment}"/>
+
+                                <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource tbSearch}" 
+                                    IsEnabled="{Binding ElementName=txbProfileName, Path=IsEnabled, Converter={StaticResource NotConverter}}" Width="Auto" Text="{Binding sfilterProfileOptions, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBox x:Name="txbProfileName" Grid.Row="2" Grid.Column="1" IsEnabled="{Binding xProfileEditMode}" Style="{StaticResource tbxStyleSeam}" Width="Auto" Text="{Binding clCurrentProfile.sName, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"  />
+                                <ComboBox x:Name="cbbProfileSelect" Grid.Row="2" Grid.Column="1" Width="Auto" IsEnabled="{Binding ElementName=txbProfileName, Path=IsEnabled, Converter={StaticResource NotConverter}}"
+                                    FontSize="21"
+                                    Style="{StaticResource cbbStyleEnabledIsVisible}" 
+                                    ItemsSource="{Binding clCurrentProfile.obcProfileOptions, Mode=OneWay}" 
+                                    DisplayMemberPath="sDisplayName"
+                                    SelectedValue="{Binding iprofileSelectedValue}"
+                                    SelectedValuePath="iSelectedvaluePath">
+                                </ComboBox>
+                                <CheckBox x:Name="cbProfileActive" Grid.Row="2" Grid.Column="2" Style="{StaticResource cbStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ProfileActive}" IsEnabled="{Binding xProfileEditMode}"
+                                     IsChecked="{Binding clCurrentProfile.active}">
+                                </CheckBox>
+
+                                <TextBox x:Name="txbProfileComment" Grid.Row="3" Grid.Column="1" Style="{StaticResource tbxStyleSeam}" Width="Auto" Text="{Binding clCurrentProfile.sComment, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" IsEnabled="{Binding xProfileEditMode}" />
+
+                            </Grid>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" >
+                                    <Button  x:Name="btnFirstProfile" Style="{StaticResource BtnStyle}" Command="{Binding firstProfileCommand}" Content="First"/>
+                                    <Button  x:Name="btnLastProfile" Style="{StaticResource BtnStyle}" Command="{Binding lastProfileCommand}" Content="Last"/>
+                                </StackPanel> -->
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18">Seam details</Label>
+                        <ListBox Grid.Row="1" ItemsSource="{Binding clCurrentProfile.obcSeamOptions}"
+                                            SelectedValue="{Binding iSeamSelectedValue}"
+                                            SelectedValuePath="iSelectedvaluePath"
+                                            HorizontalContentAlignment="Stretch"
+                                            FontSize="18" 
+                                            IsEnabled="{Binding xSeamTemplateEditMode, Converter={StaticResource NotConverter}}"  Margin="10,0,0,0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" HorizontalAlignment="Left" Content="{Binding sDisplayName}" VerticalAlignment="Center"/>
+                                        <CheckBox Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="{Binding xSeamNotEmpty}" IsEnabled="False"/>
+                                    </Grid>
+
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Grid.RowSpan="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+
+                                <TextBox Grid.Row="0" Grid.Column="0" Style="{StaticResource tbSearch}" IsEnabled="{Binding xProfileEditMode}" Width="Auto" Text="{Binding sfilterSeamTemplateOptions, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" />
+  
+                                <TextBox Grid.Row="1" Grid.Column="0" x:Name="txbSeamTemplateName" IsEnabled="{Binding xSeamTemplateEditMode}" Style="{StaticResource tbxStyleSeam}" Width="Auto" Text="{Binding clCurrentSeamTemplate.name, UpdateSourceTrigger=PropertyChanged}"  />
+
+                                <ComboBox Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Width="Auto" IsEnabled="{Binding ElementName=txbSeamTemplateName, Path=IsEnabled, Converter={StaticResource NotConverter}}" Height="40" VerticalAlignment="Top"
+                                    FontSize="20"
+                                    Style="{StaticResource cbbStyleEnabledIsVisible}" 
+                                    ItemsSource="{Binding clCurrentSeamTemplate.obcSeamTemplateOptions, Mode=TwoWay}" 
+                                    DisplayMemberPath="sDisplayName"
+                                    SelectedValue="{Binding iSeamTemplateSelectedValue}"
+                                    SelectedValuePath="iSelectedvaluePath"/>
+                                <TextBox Grid.Row="2" Grid.Column="0"  Width="Auto" FontSize="16" Style="{StaticResource tbxStyleSeam}" IsEnabled="{Binding xSeamTemplateEditMode}"
+                                             Text="{Binding clCurrentSeamTemplate.comment, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+
+                            <GroupBox Grid.Row="1" Grid.Column="0"  DockPanel.Dock="Top" Style="{StaticResource grpBoxStyle}"  Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__General}"  IsEnabled="{Binding xSeamTemplateEditMode}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__SeamActive}" />
+                                    <Label Grid.Row="1" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Seam}" />
+                                    <Label Grid.Row="2" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Transit}" />
+                                    <Label Grid.Row="3" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Scanback}"/>
+                                    <Label Grid.Row="4" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__PrintLabel}"/>
+                                    <Label Grid.Row="5" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__LabelPosition}" IsEnabled="{Binding ElementName=cbSeamPrintLabelActive, Path=IsChecked}" />
+                                    <Label Grid.Row="6" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__LabelPath}" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" IsEnabled="{Binding ElementName=cbSeamPrintLabelActive, Path=IsChecked}"/>
+
+                                    <CheckBox  x:Name="cbSeamActive" Grid.Row="0" Grid.Column="1" Style="{StaticResource cbStyle}" Content="" HorizontalAlignment="Center"
+                                        IsChecked="{Binding clCurrentSeamTemplate.active}">
+                                    </CheckBox>
+
+                                    <ComboBox x:Name="cbbSeam" Grid.Row="1" Grid.Column="1" 
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clGeneralSeamOptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clGeneralSeamOptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                    <ComboBox x:Name="cbbTransit" Grid.Row="2" Grid.Column="1" 
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clGeneralTransitOptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clGeneralTransitOptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                    <ComboBox x:Name="cbbScanback" Grid.Row="3" Grid.Column="1" 
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clGeneralScanbackOptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clGeneralScanbackOptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                    <CheckBox  x:Name="cbSeamPrintLabelActive" Grid.Row="4" Grid.Column="1" Style="{StaticResource cbStyle}" Content="" HorizontalAlignment="Center"
+                                        IsChecked="{Binding clCurrentSeamTemplate.printLabelActive}">
+                                    </CheckBox>
+
+                                    <TextBox  Grid.Row="5" Grid.Column="1" Style="{StaticResource tbxStyleSeam}" IsEnabled="{Binding ElementName=cbSeamPrintLabelActive, Path=IsChecked}"
+                                             Text="{Binding clCurrentSeamTemplate.labelPrtPos, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                    <Grid Grid.Row="7" Grid.ColumnSpan="2">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox x:Name="PathToLabel" FontSize="16" Style="{StaticResource tbxStyleSeam}" Width="Auto" IsEnabled="{Binding ElementName=cbSeamPrintLabelActive, Path=IsChecked}"
+                                                 Text="{Binding clCurrentSeamTemplate.labelFile, UpdateSourceTrigger=PropertyChanged}">
+                                            <!-- <TextBox.InputBindings>
+                                                <MouseBinding Gesture="LeftClick" Command="{Binding selectLabelPathFolderCommand}" />
+                                            </TextBox.InputBindings> -->
+                                        </TextBox>
+                                        <Button Width="80" Height="Auto" HorizontalAlignment="Right" x:Name="btnEditLabelPath" Style="{StaticResource BtnStyle}" 
+                                            Command="{Binding selectLabelPathFolderCommand}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Select}" IsEnabled="{Binding ElementName=cbSeamPrintLabelActive, Path=IsChecked}"/>
+
+                                    </Grid>
+
+
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Grid.Row="2" Grid.Column="0"  DockPanel.Dock="Bottom" Style="{StaticResource grpBoxStyle}" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Monitoring}" IsEnabled="{Binding xSeamTemplateEditMode}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120" />
+                                        <ColumnDefinition Width="180" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Bobbin}"/>
+                                    <Label Grid.Column="0" Grid.Row="1" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Cover}"/>
+                                    <Label Grid.Column="0" Grid.Row="2" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Eltex}"/>
+                                    <ComboBox x:Name="cbbBobbin" Grid.Row="0" Grid.Column="1"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clMonitoringBobbinOptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clMonitoringBobbinOptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                    <ComboBox x:Name="cbbCover" Grid.Column="1" Grid.Row="1"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clMonitoringCoverOptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clMonitoringCoverOptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                    <ComboBox x:Name="cbbEltex" Grid.Column="1" Grid.Row="2"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clMonitoringEltexOptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clMonitoringEltexOptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                        <GroupBox Grid.Row="0" Grid.Column="1" Style="{StaticResource grpBoxStyle}" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Tension}" IsEnabled="{Binding xSeamTemplateEditMode}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__MinTens}"/>
+                                <Label Grid.Column="0" Grid.Row="1" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__MaxTens}"/>
+                                <Label Grid.Column="0" Grid.Row="2" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Filter}"/>
+                                <Label Grid.Column="0" Grid.Row="3" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Blind}"/>
+                                <TextBox x:Name="tbMinTens" Grid.Column="1" Grid.Row="0"  Style="{StaticResource tbxStyleSeam}" 
+                                            Text="{Binding clCurrentSeamTemplate.sMinTens, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbMaxTens" Grid.Column="1" Grid.Row="1"  Style="{StaticResource tbxStyleSeam}"
+                                             Text="{Binding clCurrentSeamTemplate.sMaxTens, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbTensFilter" Grid.Column="1" Grid.Row="2"  Style="{StaticResource tbxStyleSeam}" 
+                                             Text="{Binding clCurrentSeamTemplate.sTensFilter, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbBlindTens" Grid.Column="1" Grid.Row="3"  Style="{StaticResource tbxStyleSeam}" 
+                                             Text="{Binding clCurrentSeamTemplate.sBlindTens, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
+                                </TextBox>
+                            </Grid>
+
+                        </GroupBox>
+                        <GroupBox x:Name="gbSeam" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource grpBoxStyle}" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Seam}"  IsEnabled="{Binding xSeamTemplateEditMode}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--<Label Grid.Row="0" Style="{StaticResource lblStyle}" Content="{DynamicResource lbStiches}" />-->
+                                <!--<Label Grid.Row="0" Style="{StaticResource lblStyle}" Content="{Binding sNameStitches, FallbackValue='Stiches'}"/>-->
+                                <!--<Label Grid.Row="0" Style="{StaticResource lblStyle}" Content="{x:Static p:Resources.String1}" /> -->
+
+                                <!--<Condition Binding="{Binding ElementName=tbStiches, Path=(Validation.HasError)}" Value="false" />
+                                Content="{Binding Path=Resource1.New, Source={StaticResource LocalizedStrings }}"
+                                <ComboBox x:Name="cbbZVR"  Grid.Column="1" Grid.Row="3"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clFunctionsZVROptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clFunctionsZVROptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/> -->
+                                <Label Grid.Row="0" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Stitches}"/>
+
+                                <Label Grid.Row="1" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__StitchesPlus}"/>
+                                <Label Grid.Row="2" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__StitchesMin}"/>
+                                <Label Grid.Row="3" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__BlindArea}"/>
+                                <Label Grid.Row="4" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__SeamLength}"/>
+                                <Label Grid.Row="5" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__StitchesLength}"/>
+                                <Label Grid.Row="6" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Speed}"/>
+                                <TextBox x:Name="tbStitchCount"  Grid.Column="1" Grid.Row="0" Style="{StaticResource tbxStyleSeam}" VerticalAlignment="Center"
+                                             Text="{Binding clCurrentSeamTemplate.sStitchCount, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
+
+                                </TextBox>
+                                <TextBox x:Name="tbPosTol" Grid.Column="1" Grid.Row="1" Style="{StaticResource tbxStyleSeam}" VerticalAlignment="Center"
+                                             Text="{Binding clCurrentSeamTemplate.sPosTol, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbNegTol" Grid.Column="1" Grid.Row="2" Style="{StaticResource tbxStyleSeam}" VerticalAlignment="Center"
+                                             Text="{Binding clCurrentSeamTemplate.sNegTol, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbBlindArea" Grid.Column="1" Grid.Row="3" Style="{StaticResource tbxStyleSeam}" VerticalAlignment="Center"
+                                             Text="{Binding clCurrentSeamTemplate.sBlindArea, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbSeamLen" Grid.Column="1" Grid.Row="4" Style="{StaticResource tbxStyleSeam}" VerticalAlignment="Center"
+                                             Text="{Binding clCurrentSeamTemplate.sSeamLen, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbStichLen" Grid.Column="1" Grid.Row="5" Style="{StaticResource tbxStyleSeam}" VerticalAlignment="Center"
+                                             Text="{Binding clCurrentSeamTemplate.sStitchLen, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbSpeed" Grid.Column="1" Grid.Row="6" Style="{StaticResource tbxStyleSeam}" VerticalAlignment="Center"
+                                             Text="{Binding clCurrentSeamTemplate.sSpeed, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Grid.Row="0" Grid.Column="2" Style="{StaticResource grpBoxStyle}" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Header}" IsEnabled="{Binding xSeamTemplateEditMode}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__StartBtFw}" />
+                                <Label Grid.Row="1" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__StartBtBw}" />
+                                <Label Grid.Row="2" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__EndBtFw}" />
+                                <Label Grid.Row="3" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__EndBtBw}" />
+
+                                <TextBox x:Name="tbStartBtFw" Grid.Column="1" Grid.Row="0" Style="{StaticResource tbxStyleSeam}"
+                                            Text="{Binding  clCurrentSeamTemplate.sStartBtFw, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbStartBtBw" Grid.Column="1" Grid.Row="1" Style="{StaticResource tbxStyleSeam}"
+                                             Text="{Binding  clCurrentSeamTemplate.sStartBtBw, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbEndBtFw" Grid.Column="1" Grid.Row="2" Style="{StaticResource tbxStyleSeam}"
+                                             Text="{Binding  clCurrentSeamTemplate.sEndBtFw, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBox x:Name="tbEndBtBw" Grid.Column="1" Grid.Row="3" Style="{StaticResource tbxStyleSeam}"
+                                             Text="{Binding  clCurrentSeamTemplate.sEndBtBw, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource grpBoxStyle}" Header="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Functions}"  IsEnabled="{Binding xSeamTemplateEditMode}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Pedal}"/>
+                                <Label Grid.Column="0" Grid.Row="1" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__VRU}"/>
+                                <Label Grid.Column="0" Grid.Row="2" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__NHT}"/>
+                                <Label Grid.Column="0" Grid.Row="3" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ZVR}"/>
+                                <Label Grid.Column="0" Grid.Row="4" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__STL}"/>
+                                <Label Grid.Column="0" Grid.Row="5" Style="{StaticResource lblStyle}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__FSPR}"/>
+                                <ComboBox x:Name="cbbPedal"   Grid.Column="1"  Grid.Row="0"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding  clCurrentSeamTemplate.clFunctionsPedalOptions.obcItems, Mode=TwoWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clFunctionsPedalOptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                <ComboBox x:Name="cbbVRU"  Grid.Column="1" Grid.Row="1"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clFunctionsVRUOptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clFunctionsVRUOptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                <ComboBox x:Name="cbbNHT" Grid.Column="1" Grid.Row="2"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clFunctionsNHTOptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clFunctionsNHTOptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                <ComboBox x:Name="cbbZVR"  Grid.Column="1" Grid.Row="3"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clFunctionsZVROptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clFunctionsZVROptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                <ComboBox x:Name="cbbSTL" Grid.Column="1" Grid.Row="4"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clFunctionsSTLOptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clFunctionsSTLOptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                                <ComboBox x:Name="cbbFSPR"  Grid.Column="1" Grid.Row="5"
+                                        Style="{StaticResource cbbStyleDefault}" 
+                                        ItemsSource="{Binding clCurrentSeamTemplate.clFunctionsFSPROptions.obcItems, Mode=OneWay}" 
+                                        DisplayMemberPath="sDisplayName"
+                                        SelectedValue="{Binding clCurrentSeamTemplate.clFunctionsFSPROptions.iSelectedValue}"
+                                        SelectedValuePath="iSelectedvaluePath"/>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- <local:clLocalizedStrings xmlns:local ="clr-namespace:_150903_GVE_Sewco_profiles" x:Key="LocalizedStrings" /> -->
+                        <!--<Button Grid.Row="0" Grid.Column="0" x:Name="btnNewSeam" Style="{StaticResource BtnStyle}"      Command="{Binding newSeamTemplateCommand}"     Content="{Binding Path=Resource1.New, Source={StaticResource LocalizedStrings }}"   Width="100" Height="Auto" HorizontalAlignment="Left"/> -->
+                        <!--<Button Grid.Row="0" Grid.Column="0" x:Name="btnNewSeam" Style="{StaticResource BtnStyle}"      Command="{Binding newSeamTemplateCommand}"     Content="{ns:LocExtension New}"   Width="100" Height="Auto" HorizontalAlignment="Left"/> -->
+                        <!--<Button Grid.Row="0" Grid.Column="0" x:Name="btnNewSeam" Style="{StaticResource BtnStyle}"      Command="{Binding newSeamTemplateCommand}"     Content="{ns:clTest New}"   Width="100" Height="Auto" HorizontalAlignment="Left"/> -->
+                        <!--<Button Grid.Row="0" Grid.Column="0" x:Name="btnNewSeam" Style="{StaticResource BtnStyle}"      Command="{Binding newSeamTemplateCommand}"      Content="{DynamicResource btnNew}"   Width="100" Height="Auto" HorizontalAlignment="Left"/>
+                        -->
+
+                        <Button Grid.Row="0" Grid.Column="0" x:Name="btnNewSeam" Style="{StaticResource BtnStyle}"       Command="{Binding newSeamTemplateCommand}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__New}"  Width="Auto" Height="Auto"/>
+                        <Button Grid.Row="1" Grid.Column="0" x:Name="btnEditSeam" Style="{StaticResource BtnStyle}"      Command="{Binding editSeamTemplateCommand}"    Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Edit}"  Width="Auto" Height="Auto"/>
+                        <Button Grid.Row="2" Grid.Column="0" x:Name="btnDeleteSeam" Style="{StaticResource BtnStyle}"    Command="{Binding deleteSeamTemplateCommand}"  Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Delete}" Width="Auto" Height="Auto"/>
+                        <Button Grid.Row="3" Grid.Column="0" x:Name="btnCopySeam" Style="{StaticResource BtnStyle}"      Command="{Binding copySeamTemplateCommand}"    Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Copyfrom}"  Width="Auto" Height="Auto" />
+                        <Button Grid.Row="4" Grid.Column="0" x:Name="btnCancelSeam" Style="{StaticResource BtnStyle}"    Command="{Binding cancelSeamTemplateCommand}"  Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Cancel}" Width="Auto" Height="Auto"/>
+                        <Button Grid.Row="5" Grid.Column="0" x:Name="btnSaveSeam"  Style="{StaticResource BtnStyle}"      Command="{Binding saveSeamTemplateCommand}"    Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Save}"  Width="Auto" Height="Auto">
+                            <!--<Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#B9E6FF"/>
+                                    <Setter Property="Width" Value="120"/>
+                                    <Setter Property="Height" Value="60"/>
+                                    <Setter Property="FontSize" Value="17"/>
+                                    <Setter Property="IsEnabled" Value="false" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="1">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsEnabled" Value="false">
+                                                        <Setter TargetName="Border" Property="BorderBrush" Value="#C4C4C4" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ElementName=tbStiches, Path=(Validation.HasError)}" Value="false" />
+ 
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="IsEnabled" Value="true"/>
+                                        </MultiDataTrigger>
+
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#25AEFE"/>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Background" Value="#DCF1FE" />
+                                            <Setter Property="Foreground" Value="#C3B5B5" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>-->
+                        </Button>
+                    </Grid>
+
+
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+
+
+
+
+
+</UserControl>

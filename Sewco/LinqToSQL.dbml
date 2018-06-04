@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="UsermanagementDB" Class="LinqToSQLDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\UsermanagementDB.mdf;Integrated Security=True" SettingsObjectName="Sewco.Properties.Settings" SettingsPropertyName="UsermanagementDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.DeviceType" Member="DeviceTypes">
+    <Type Name="DeviceType">
+      <Column Name="deviceTypeId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="deviceName" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="deviceAdress" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="interfaceType" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="DeviceType_Material_IOPosition" Member="Material_IOPositions" ThisKey="deviceTypeId" OtherKey="deviceTypeId" Type="Material_IOPosition" />
+      <Association Name="DeviceType_Option" Member="Options" ThisKey="deviceTypeId" OtherKey="deviceTypeId1" Type="Option" />
+      <Association Name="DeviceType_Option1" Member="Options1" ThisKey="deviceTypeId" OtherKey="deviceTypeId2" Type="Option" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Material" Member="Materials">
+    <Type Name="Material">
+      <Column Name="materialId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="code" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="minLength" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="range" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="imagePath" Type="System.String" DbType="VarChar(300)" CanBeNull="true" />
+      <Association Name="Material_MaterialProduct" Member="MaterialProducts" ThisKey="materialId" OtherKey="materialId" Type="MaterialProduct" />
+      <Association Name="Material_MaterialTypeMaterial" Member="MaterialTypeMaterials" ThisKey="materialId" OtherKey="materialId" Type="MaterialTypeMaterial" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Material_IOPositions" Member="Material_IOPositions">
+    <Type Name="Material_IOPosition">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="projectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="materialIOPosition" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="materialTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="deviceTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="DeviceType_Material_IOPosition" Member="DeviceType" ThisKey="deviceTypeId" OtherKey="deviceTypeId" Type="DeviceType" IsForeignKey="true" />
+      <Association Name="MaterialType_Material_IOPosition" Member="MaterialType" ThisKey="materialTypeId" OtherKey="materialTypeId" Type="MaterialType" IsForeignKey="true" />
+      <Association Name="Project_Material_IOPosition" Member="Project" ThisKey="projectId" OtherKey="projectId" Type="Project" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MaterialProduct" Member="MaterialProducts">
+    <Type Name="MaterialProduct">
+      <Column Name="productId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="materialIOPosition" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="materialId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Material_MaterialProduct" Member="Material" ThisKey="materialId" OtherKey="materialId" Type="Material" IsForeignKey="true" />
+      <Association Name="Product_MaterialProduct" Member="Product" ThisKey="productId" OtherKey="productId" Type="Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MaterialType" Member="MaterialTypes">
+    <Type Name="MaterialType">
+      <Column Name="materialTypeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
+      <Association Name="MaterialType_Material_IOPosition" Member="Material_IOPositions" ThisKey="materialTypeId" OtherKey="materialTypeId" Type="Material_IOPosition" />
+      <Association Name="MaterialType_MaterialTypeMaterial" Member="MaterialTypeMaterials" ThisKey="materialTypeId" OtherKey="materialTypeId" Type="MaterialTypeMaterial" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MaterialTypeMaterial" Member="MaterialTypeMaterials">
+    <Type Name="MaterialTypeMaterial">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="materialId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="materialTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Material_MaterialTypeMaterial" Member="Material" ThisKey="materialId" OtherKey="materialId" Type="Material" IsForeignKey="true" />
+      <Association Name="MaterialType_MaterialTypeMaterial" Member="MaterialType" ThisKey="materialTypeId" OtherKey="materialTypeId" Type="MaterialType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Options" Member="Options">
+    <Type Name="Option">
+      <Column Name="optionId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="projectId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="deviceTypeId1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="deviceTypeId2" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="DeviceType_Option" Member="DeviceType" ThisKey="deviceTypeId1" OtherKey="deviceTypeId" Type="DeviceType" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="DeviceType_Option1" Member="DeviceType1" ThisKey="deviceTypeId2" OtherKey="deviceTypeId" Type="DeviceType" IsForeignKey="true" />
+      <Association Name="Project_Option" Member="Project" ThisKey="projectId" OtherKey="projectId" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Production" Member="Productions">
+    <Type Name="Production">
+      <Column Name="projectId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="productId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="batchDone" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="batchTotal" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Product_Production" Member="Product" ThisKey="productId" OtherKey="productId" Type="Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Project_Production" Member="Project" ThisKey="projectId" OtherKey="projectId" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductionCounter" Member="ProductionCounters">
+    <Type Name="ProductionCounter">
+      <Column Name="projectId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="productId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="counterValue" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TotalCounterValue" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="firstProductInProjectCounterTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Products" Member="Products">
+    <Type Name="Product">
+      <Column Name="productId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="code" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="coverId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="typeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="projectId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="profileId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="imagePath" Type="System.String" DbType="VarChar(300)" CanBeNull="true" />
+      <Association Name="Product_MaterialProduct" Member="MaterialProducts" ThisKey="productId" OtherKey="productId" Type="MaterialProduct" />
+      <Association Name="Product_Production" Member="Productions" ThisKey="productId" OtherKey="productId" Type="Production" />
+      <Association Name="profile_Product" Member="profile" ThisKey="profileId" OtherKey="profileId" Type="profile" IsForeignKey="true" />
+      <Association Name="Project_Product" Member="Project" ThisKey="projectId" OtherKey="projectId" Type="Project" IsForeignKey="true" />
+      <Association Name="Covers_Product" Member="Covers" ThisKey="coverId" OtherKey="coverId" Type="Covers" IsForeignKey="true" />
+      <Association Name="Types_Product" Member="Types" ThisKey="typeId" OtherKey="typeId" Type="Types" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.profile" Member="profiles">
+    <Type Name="profile">
+      <Column Name="profileId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="comment" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="seam1_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam2_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam3_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam4_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam5_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam6_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam7_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam8_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam9_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam10_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam11_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam12_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam13_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam14_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam15_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seam16_id" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Association Name="profile_Product" Member="Products" ThisKey="profileId" OtherKey="profileId" Type="Product" />
+      <Association Name="seamTemplate_profile" Member="seamTemplate" ThisKey="seam1_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile1" Member="seamTemplate1" ThisKey="seam10_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile2" Member="seamTemplate2" ThisKey="seam11_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile3" Member="seamTemplate3" ThisKey="seam6_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile4" Member="seamTemplate4" ThisKey="seam7_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile5" Member="seamTemplate5" ThisKey="seam8_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile6" Member="seamTemplate6" ThisKey="seam9_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile7" Member="seamTemplate7" ThisKey="seam10_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile8" Member="seamTemplate8" ThisKey="seam2_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile9" Member="seamTemplate9" ThisKey="seam3_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile10" Member="seamTemplate10" ThisKey="seam4_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile11" Member="seamTemplate11" ThisKey="seam5_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile12" Member="seamTemplate12" ThisKey="seam6_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile13" Member="seamTemplate13" ThisKey="seam7_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile14" Member="seamTemplate14" ThisKey="seam8_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+      <Association Name="seamTemplate_profile15" Member="seamTemplate15" ThisKey="seam9_id" OtherKey="Id" Type="seamTemplate" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Project" Member="Projects">
+    <Type Name="Project">
+      <Column Name="projectId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="projectName" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="comment" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="machineId" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="plantId" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="plantInfo" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="customerId" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="customerInfo" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="productMode" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="counterReset" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="useLotNumber" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="prodCodesTable" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="imagePath" Type="System.String" DbType="VarChar(300)" CanBeNull="true" />
+      <Association Name="Project_Material_IOPosition" Member="Material_IOPositions" ThisKey="projectId" OtherKey="projectId" Type="Material_IOPosition" />
+      <Association Name="Project_Option" Member="Options" ThisKey="projectId" OtherKey="projectId" Type="Option" />
+      <Association Name="Project_Production" Member="Productions" ThisKey="projectId" OtherKey="projectId" Type="Production" />
+      <Association Name="Project_Product" Member="Products" ThisKey="projectId" OtherKey="projectId" Type="Product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.seamTemplate" Member="seamTemplates">
+    <Type Name="seamTemplate">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="comment" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="printLabelActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="labelFile" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="labelPrtPos" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="minTens" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="maxTens" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="blindTens" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="tensFilter" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="stitchCount" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="posTol" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="negTol" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="blindArea" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="seamLen" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="stitchLen" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="startBtFw" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="startBtBw" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="endBtFw" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="endBtBw" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="speed" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="par" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="general" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="functions" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="monitoring" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Association Name="seamTemplate_profile" Member="profiles" ThisKey="Id" OtherKey="seam1_id" Type="profile" />
+      <Association Name="seamTemplate_profile1" Member="profiles1" ThisKey="Id" OtherKey="seam10_id" Type="profile" />
+      <Association Name="seamTemplate_profile2" Member="profiles2" ThisKey="Id" OtherKey="seam11_id" Type="profile" />
+      <Association Name="seamTemplate_profile3" Member="profiles3" ThisKey="Id" OtherKey="seam6_id" Type="profile" />
+      <Association Name="seamTemplate_profile4" Member="profiles4" ThisKey="Id" OtherKey="seam7_id" Type="profile" />
+      <Association Name="seamTemplate_profile5" Member="profiles5" ThisKey="Id" OtherKey="seam8_id" Type="profile" />
+      <Association Name="seamTemplate_profile6" Member="profiles6" ThisKey="Id" OtherKey="seam9_id" Type="profile" />
+      <Association Name="seamTemplate_profile7" Member="profiles7" ThisKey="Id" OtherKey="seam10_id" Type="profile" />
+      <Association Name="seamTemplate_profile8" Member="profiles8" ThisKey="Id" OtherKey="seam2_id" Type="profile" />
+      <Association Name="seamTemplate_profile9" Member="profiles9" ThisKey="Id" OtherKey="seam3_id" Type="profile" />
+      <Association Name="seamTemplate_profile10" Member="profiles10" ThisKey="Id" OtherKey="seam4_id" Type="profile" />
+      <Association Name="seamTemplate_profile11" Member="profiles11" ThisKey="Id" OtherKey="seam5_id" Type="profile" />
+      <Association Name="seamTemplate_profile12" Member="profiles12" ThisKey="Id" OtherKey="seam6_id" Type="profile" />
+      <Association Name="seamTemplate_profile13" Member="profiles13" ThisKey="Id" OtherKey="seam7_id" Type="profile" />
+      <Association Name="seamTemplate_profile14" Member="profiles14" ThisKey="Id" OtherKey="seam8_id" Type="profile" />
+      <Association Name="seamTemplate_profile15" Member="profiles15" ThisKey="Id" OtherKey="seam9_id" Type="profile" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Settings" Member="Settings">
+    <Type Name="Setting">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="sLanguage" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_UserProfiles" Member="tbl_UserProfiles">
+    <Type Name="tbl_UserProfile">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Userprofile" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Productions" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="MachineConfig" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Products" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Users" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Reset" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Reprint" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Maintenance" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Find" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Desktop" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Materials" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ProductProfile" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LabelEditor" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="BobbinMonitor" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="BobbinTracer" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Covers" Member="Covers">
+    <Type Name="Covers">
+      <Column Name="coverId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="code" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="customer" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="program" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="manyear" Type="System.String" DbType="VarChar(4) NOT NULL" CanBeNull="false" />
+      <Column Name="style" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="colour" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="imagePath" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Association Name="Covers_Product" Member="Products" ThisKey="coverId" OtherKey="coverId" Type="Product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Types" Member="Types">
+    <Type Name="Types">
+      <Column Name="typeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="code" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="comment" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="imagePath" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Association Name="Types_Product" Member="Products" ThisKey="typeId" OtherKey="typeId" Type="Product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Users" Member="tbl_Users">
+    <Type Name="tbl_User">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Rights" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Operatortag" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CardCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="img" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+</Database>

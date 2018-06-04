@@ -1,0 +1,212 @@
+﻿<Window x:Class     ="Sewco.Modules.ControlPanel.ViewControlPanel"
+        xmlns       ="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x     ="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d     ="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc    ="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:extern="clr-namespace:Sewco.Resources.Helper_classes"
+        xmlns:extern1="clr-namespace:Sewco.Modules.Header"
+        xmlns:ns    ="clr-namespace:Sewco"
+        xmlns:intern="clr-namespace:Sewco.Modules.ControlPanel"
+        xmlns:p     ="clr-namespace:Sewco.Properties"
+        Title       ="Control panel"
+        xmlns:sys       ="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable    ="d"
+      d:DesignHeight    ="1080" d:DesignWidth="1600" WindowState="Maximized" WindowStartupLocation="CenterScreen" WindowStyle="None"   >
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <p:Resources x:Key="Resources"/>
+            <sys:String x:Key="languageFile">/Resources/Dutch.xaml</sys:String>
+            <extern:NotConverter x:Key="NotConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Xaml/Styles.xaml"/>
+                <!--<ResourceDictionary Source="{DynamicResource languageFile}"/> -->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Border Background="#F9F9F9" BorderBrush="Gainsboro" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!-- <extern1:ViewHeader x:Name="Header" Grid.Row="0" /> -->
+
+            <Border x:Name="Header" Style="{StaticResource BorderHeaderFooter}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="400"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="{Binding header.sModuleName}" Grid.Column="0" FontSize="30" Grid.ColumnSpan="3" Foreground="White" HorizontalAlignment="Center"/>
+
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox x:Name="tbUsername" Grid.Row="0"  Grid.RowSpan="2" Height="50" Background="white" IsEnabled="{Binding header.xUserLoggedIn, Converter={StaticResource NotConverter}}" Text="{Binding header.sUserCode, UpdateSourceTrigger=PropertyChanged}"     Style="{StaticResource TextboxLoginOutHeaderUserName}">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding header.LoginCommand}"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+
+                        <Label Foreground="white" Grid.Row="0" IsEnabled="{Binding header.xUserLoggedIn}" Content="{Binding header.sActiveUser}"     Style="{StaticResource LabelHeaderFooter}"/>
+                        <Label Foreground="white" Grid.Row="1" IsEnabled="{Binding header.xUserLoggedIn}" Content="{Binding header.sActiveProfile}"  Style="{StaticResource LabelHeaderFooter}" FontStyle="Italic"/>
+                    </Grid>
+
+                    <Button Grid.Column="2" Command="{Binding header.LogoutCommand}" Style="{StaticResource ButtonLoginOutHeader}" HorizontalAlignment="Right" Width="90">
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="/Resources/Images/commonImages/Logout.png" Width="40" Height="40" />
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Logout}" VerticalAlignment="Bottom" FontSize="20" Margin="0,-10"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnLogin" Grid.Column="2" Command="{Binding header.LoginCommand}" Style="{StaticResource ButtonLoginOutHeader}"  HorizontalAlignment="Right" Width="90" Click="btnLogin_Click">
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="/Resources/Images/commonImages/Login.png" Width="40" Height="40" />
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Login}" VerticalAlignment="Bottom" FontSize="20" Margin="0,-10"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+            <DockPanel Name="stkContent" Grid.Row="1">
+
+            </DockPanel>
+            
+            <DockPanel Name="dckContent" Grid.Row="1" >
+                <ContentPresenter Content="{Binding ucCurrentPage}" />
+            </DockPanel> 
+
+            <Grid Grid.Row="1" IsEnabled="{Binding xShowMainMenuButtons}" Style="{StaticResource GridTest}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Button x:Name="btnProductions" Grid.Row="0" Style="{StaticResource BtnControlPanelMenu}" Command="{Binding ShowProductSelectionScreenCommand}" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Resources/Images/commonImages/SewingMachine.png" Width="70" Height="70" />
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Production}" VerticalAlignment="Bottom" FontSize="20" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnUserManagement" Grid.Row="1" Style="{StaticResource BtnControlPanelMenu}" Command="{Binding ShowUserManagementScreenCommand}" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Resources/Images/commonImages/UserManagement.png" Width="70" Height="70" />
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__UserManagement}" VerticalAlignment="Bottom" FontSize="20" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="btnStatistics" Grid.Row="2" Style="{StaticResource BtnControlPanelMenu}" Command="{Binding ShowStatisticsScreenCommand}" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Resources/Images/commonImages/Statistics.png" Width="70" Height="70" />
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Statistics}" VerticalAlignment="Bottom" FontSize="20" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnConfiguration" Grid.Row="3" Style="{StaticResource BtnControlPanelMenu}" Command="{Binding ShowConfigurationScreenCommand}" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Resources/Images/commonImages/Settings.png" Width="70" Height="70" />
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Configuration}" VerticalAlignment="Bottom" FontSize="20" />
+                        </StackPanel>
+                    </Button>
+                    <Button Name="btnDatabase" Grid.Row="4" MouseLeave="DataBaseEditor_leave" MouseEnter="DataBaseEditor_enter" Style="{StaticResource BtnControlPanelMenuSubmenu}" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Resources/Images/commonImages/Database.png" Width="70" Height="70" />
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__DatabaseEditors}" VerticalAlignment="Bottom" FontSize="20" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnLabelEditor" Grid.Row="5" Style="{StaticResource BtnControlPanelMenu}" Command="{Binding ShowConfigurationScreenCommand}" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Resources/Images/commonImages/Print.png" Width="70" Height="70" />
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__LabelEditor}" VerticalAlignment="Bottom" FontSize="20" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnDesktop" Grid.Row="6" Style="{StaticResource BtnControlPanelMenu}" Command="{Binding ShutdownApplication}" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Resources/Images/commonImages/delete.png" Width="70" Height="70" />
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__ShutDownApplication}" VerticalAlignment="Bottom" FontSize="20" />
+                        </StackPanel>
+                    </Button> 
+                </Grid>
+            </Grid>
+
+            <Popup Grid.Row="1" Name="PopupSubmenuDatabase" IsOpen="{Binding xShowDatabaseMenu}" Style="{StaticResource puPopUpSubmenu}"  PlacementTarget="{Binding ElementName=btnDatabase}" MouseLeave="DataBasePopup_leave" MouseEnter="DataBasePopup_enter" >
+                <Border Style="{StaticResource brPopUp}">
+                    <StackPanel Orientation="Horizontal">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Command="{Binding databaseMenuProject_Command}" -->
+                            <Button Grid.Row="0" Style="{StaticResource BtnControlPanelMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__projects}"   Command="{Binding ShowDBProjectsScreenCommand}"/>
+                            <Button Grid.Row="1" Style="{StaticResource BtnControlPanelMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__products}"   Command="{Binding ShowDBProductsScreenCommand}"/>
+                            <Button Grid.Row="2" Style="{StaticResource BtnControlPanelMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__profiles}"   Command="{Binding ShowDBProfilesScreenCommand}"/>
+                            <Button Grid.Row="3" Style="{StaticResource BtnControlPanelMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__materials}"  Command="{Binding ShowDBMaterialsScreenCommand}"/>
+                            <Button Grid.Row="4" Style="{StaticResource BtnControlPanelMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__types}"      Command="{Binding ShowDBTypesScreenCommand}"/>
+                            <Button Grid.Row="5" Style="{StaticResource BtnControlPanelMenu}" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__covers}"     Command="{Binding ShowDBCoversScreenCommand}"/>
+
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+            <Border Style="{StaticResource BorderHeaderFooter}" Grid.Row="2" >
+                <Grid  Style="{StaticResource GridTest}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Button x:Name="btnHome" Grid.Column="0"  Command="{Binding ShowHomeScreenCommand}" Style="{StaticResource BtnControlPanelMenu}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Resources/Images/commonImages/Home.png" Width="30" Height="30" />
+                            <Label Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Home}" VerticalAlignment="Bottom" Style="{StaticResource LabelHeaderFooter}" />
+                        </StackPanel>
+                    </Button>
+                    <Label Grid.Column="1" Content="{Binding sTest}" />
+
+                   
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
