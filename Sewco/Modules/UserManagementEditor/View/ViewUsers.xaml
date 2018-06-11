@@ -61,16 +61,15 @@
                                                     <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
                                                 <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" >
-                                                    <Button x:Name="btnNewUser"      Style="{StaticResource BtnStyle}"   Command="{Binding newObjectCommand}"      Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__New}"                                   Click="btnNewUser_Click"/>
-                                                    <Button x:Name="btnEditUser"     Style="{StaticResource BtnStyle}"   Command="{Binding editObjectCommand}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Edit}"                                  Click="btnEditUser_Click"/>
-                                                    <Button x:Name="btnDeleteUser"   Style="{StaticResource BtnStyle}"   Command="{Binding deleteObjectCommand}"   Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Delete}"                                Click="btnDeleteUser_Click"/>
+                                                    <Button x:Name="btnNewUser" Style="{StaticResource BtnStyle}" Command="{Binding newObjectCommand}" Width="100" Content="{Binding ConverterParameter=__New, Converter={StaticResource LangConverter}}" Click="btnNewUser_Click"/>
+                                                    <Button x:Name="btnEditUser" Style="{StaticResource BtnStyle}" Command="{Binding editObjectCommand}" Width="100" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Edit}" Click="btnEditUser_Click"/>
+                                                    <Button x:Name="btnDeleteUser" Style="{StaticResource BtnStyle}" Command="{Binding deleteObjectCommand}" Width="100" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Delete}" Click="btnDeleteUser_Click"/>
                                                     <!--<Button x:Name="btnCopyUser"     Style="{StaticResource BtnStyle}"   Command="{Binding copyObjectCommand}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Copyfrom}" IsEnabled="false"/>-->
-                                                    <Button x:Name="btnCancelUser"   Style="{StaticResource BtnStyle}"   Command="{Binding cancelObjectCommand}"   Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Cancel}" IsEnabled="false"              Click="btnCancelUser_Click"/>
-                                                    <Button x:Name="btnSaveUser"     Style="{StaticResource BtnStyle}"   Command="{Binding saveObjectCommand}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Save}" IsEnabled="false"                Click="btnSaveUser_Click"/>
-                                                    <Button x:Name="btnPrint"       Style="{StaticResource BtnStyle}"   Command="{Binding copyObjectCommand}"     Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Print}" IsEnabled="True"                 Click="btnPrint_Click" />
+                                                    <Button x:Name="btnCancelUser" Style="{StaticResource BtnStyle}" Command="{Binding cancelObjectCommand}" Width="100" Content="{Binding Converter={StaticResource LangConverter}, ConverterParameter=__Cancel}" IsEnabled="false" Click="btnCancelUser_Click"/>
+                                                    <Button x:Name="btnSaveUser" Style="{StaticResource BtnStyle}" Command="{Binding saveObjectCommand}" Width="100" Content="{Binding ConverterParameter=__Save, Converter={StaticResource LangConverter}}" IsEnabled="false" Click="btnSaveUser_Click"/>
                                                 </StackPanel>
                                             </Grid>
-                                            <Grid Grid.Row="1" Style="{StaticResource GridStyle}">
+                                            <Grid Grid.Row="1" Style="{StaticResource GridStyle}" Margin="10,5,-10,-5" Grid.RowSpan="2">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="400*" />
                                                     <ColumnDefinition Width="21*"/>
@@ -82,8 +81,6 @@
                                                     <RowDefinition Height="50"/>
                                                     <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
-
-
                                             </Grid>
                                             <Grid Grid.Row="2">
                                                 <Grid.ColumnDefinitions>
@@ -101,44 +98,160 @@
 
                                 <Grid Grid.Row="1" Background="White" IsEnabled="True">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="130"/>
                                         <ColumnDefinition Width="726"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="300"/>
+                                            <RowDefinition Height="300"/>
+                                            <RowDefinition Height="300"/>
                                         </Grid.RowDefinitions>
 
                                         <Grid Grid.Row="1">
-                                            <Button x:Name="btnUsers"   Content="Users"  Style="{StaticResource BtnStyle}" HorizontalAlignment="Left" FontSize="20" IsEnabled="False" Margin="10,10,0,176" Width="130" Height="Auto"/>
-                                            <Button x:Name="btnUserProfiles"   Content="User Profiles" Style="{StaticResource BtnStyle}"  HorizontalAlignment="Left" FontSize="20" IsEnabled="True"  Margin="10,95,0,91" Width="130" Height="Auto"/>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Button Grid.Row="0" x:Name="btnUsers" Content="Users"  Style="{StaticResource BtnCustom}" HorizontalAlignment="Left" FontSize="20" IsEnabled="False" Margin="10,10,10,10" />
+                                            <Button Grid.Row="1" x:Name="btnUserProfiles"   Content="User Profiles" Style="{StaticResource BtnCustom}"  HorizontalAlignment="Left" FontSize="20" IsEnabled="True"  Margin="10,10,10,10"/>
                                         </Grid>
                                     </Grid>
 
                                     <Grid Grid.Column="1">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="600"/>
-                                            <RowDefinition Height="200"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
                                         </Grid.RowDefinitions>
+
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Grid x:Name="gridSearch" Grid.Row="0">
+                                                    <GroupBox x:Name="gbSearch" Header="Search" HorizontalAlignment="Center" Margin="10,10,10,-10" VerticalAlignment="Top" Width="343" Style="{Binding grpBoxStyle}">
+                                                        <TextBox x:Name="tbSearch" HorizontalAlignment="Center" Height="30" Margin="10,10,1,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="320" Style="{Binding tbSearch}"/>
+                                                    </GroupBox>
+                                                </Grid>
+
+                                                <Grid Grid.Row="1" x:Name="gridListUsers" Margin="0,0,0,139">
+                                                    <GroupBox x:Name="gbViewUsers" Header="View Users" Margin="10,21,10,-145">
+                                                        <ListBox x:Name="lvUsers" HorizontalAlignment="Left" Height="298" Margin="10,10,-1,0" VerticalAlignment="Top" Width="322" Style="{Binding _ListBoxItemStyle}"/>
+                                                    </GroupBox>
+                                                </Grid>
+                                            </Grid>
+
+                                            <Grid Grid.Column="1">
+                                                <GroupBox x:Name="gbDetails" Header="More Details" HorizontalAlignment="Left" Height="390" Margin="10,10,0,0" VerticalAlignment="Top" Width="258" IsEnabled="False" Visibility="Hidden">
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="*"/>
+                                                            <RowDefinition Height="*"/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <Grid Grid.Row="0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <Grid Grid.Column="0">
+                                                                <Image HorizontalAlignment="Left" Height="164" Margin="10,10,0,0" VerticalAlignment="Top" Width="78" Source="/Sewco;component/Resources/Images/DefaultImage/user.png" Stretch="Fill" />
+                                                            </Grid>
+
+                                                            <Grid Grid.Column="1">
+                                                                <Label x:Name="lblMoreName"         Content="Name:"      HorizontalAlignment="Left" Margin="10,10,0,0"  VerticalAlignment="Top"/>
+                                                                <Label x:Name="lblMoreTag"          Content="Tag:"       HorizontalAlignment="Left" Margin="10,41,0,0"  VerticalAlignment="Top"/>
+                                                                <Label x:Name="lblMoreRights"       Content="Rights:"    HorizontalAlignment="Left" Margin="10,72,0,0"  VerticalAlignment="Top"/>
+                                                                <Label x:Name="lblMoreActive"       Content="Active:"    HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top"/>
+                                                                <Label x:Name="lblMoreCardcode"     Content="Code:"      HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top"/>
+                                                                <TextBox x:Name="tbMoreRights"      HorizontalAlignment="Left" Height="27" Margin="58,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Background="Transparent" Style="{StaticResource tbSearch}"/>
+                                                                <TextBox x:Name="tbMoreTag"         HorizontalAlignment="Left" Height="27" Margin="58,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Background="Transparent"  Style="{StaticResource tbSearch}"/>
+                                                                <TextBox x:Name="tbMoreName"        HorizontalAlignment="Left" Height="27" Margin="58,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Background="Transparent"  Style="{StaticResource tbSearch}"/>
+                                                                <TextBox x:Name="tbMoreCardCode"    HorizontalAlignment="Left" Height="27" Margin="58,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Background="Transparent" Style="{StaticResource tbSearch}"/>
+                                                                <CheckBox x:Name="checkMoreActive"  HorizontalAlignment="Left" Margin="57,110,0,0" VerticalAlignment="Top" Height="21" Width="90"/>
+                                                            </Grid>
+                                                        </Grid>
+
+                                                        <Grid Grid.Row="1">
+                                                            <GroupBox x:Name="gbRights" Header="Rights" HorizontalAlignment="Left" Height="170" Margin="10,10,0,0" VerticalAlignment="Top" Width="236" >
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <Grid Grid.Column="0">
+                                                                        <CheckBox x:Name="checkProductions"  Content="Productions"         HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkMachineconfig" Content="Machineconfig"       HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkProducts"     Content="Products"            HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkUsers"        Content="Users"               HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkReset"        Content="Reset"               HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkReprint"      Content="Reprint"             HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkMaintenance"  Content="Maintenance"         HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top"/>
+                                                                    </Grid>
+                                                                    <Grid Grid.Column="1">
+                                                                        <CheckBox x:Name="checkFind"           Content="Find"            HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkDesktop"        Content="Desktop"             HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkMaterials"      Content="Materials"           HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkProductprofile" Content="Productprofile"  HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkLabeleditor"    Content="Labeleditor"      HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkBobbinmonitor"  Content="Bobbinmonitor"   HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top"/>
+                                                                        <CheckBox x:Name="checkBobbintracer"   Content="Bobbintracer"    HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top"/>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </GroupBox>
+                                                        </Grid>
+                                                    </Grid>
+                                                </GroupBox>
+                                            </Grid>
+                                        </Grid>
+
+                                        <Grid Grid.Row="1">
+                                            <GroupBox x:Name="gbAddEditUsers" Margin="10,10,269,10" IsEnabled="False" Header="Add/Edit Users" Style="{StaticResource grpBoxStyle}" Visibility="Hidden">
+                                                <Grid >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="500"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid Grid.Column="0" Margin="0,0,65,0">
+                                                        <Label      x:Name="lblName"         Content="Name"          HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="35" Width="65" Style="{StaticResource lblStyle}"/>
+                                                        <Label      x:Name="lblRights"       Content="Rights"        HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="34" Width="66" Style="{StaticResource lblStyle}" />
+                                                        <Label      x:Name="lblOperatortag"  Content="Operatortag"   HorizontalAlignment="Left" Margin="10,89,0,0" VerticalAlignment="Top" Height="31" Width="116" Style="{StaticResource lblStyle}"/>
+                                                        <Label      x:Name="lblActive"       Content="Active"        HorizontalAlignment="Left" Margin="10,122,0,0" VerticalAlignment="Top" Height="27" Width="65" Style="{StaticResource lblStyle}" />
+                                                        <Label      x:Name="lblCardcode"     Content="Cardcode"      HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Height="34" Width="94" Style="{StaticResource lblStyle}"/>
+
+                                                        <TextBox    x:Name="tbName"         HorizontalAlignment="Left" Margin="149,10,0,0"      VerticalAlignment="Top" Height="35" Width="185"     Style="{StaticResource tbSearch}" TextWrapping="Wrap"/>
+                                                        <ComboBox   x:Name="cbRights"       HorizontalAlignment="Left" Margin="149,49,0,0"      VerticalAlignment="Top" Height="35" Width="185"       Style="{StaticResource cbbStyleDefault}"/>
+                                                        <TextBox    x:Name="tbOperatortag"  HorizontalAlignment="Left" Height="35"              Margin="149,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185"      Style="{StaticResource tbSearch}"/>
+                                                        <CheckBox   x:Name="checkActive"    HorizontalAlignment="Left" Margin="149,122,0,0" VerticalAlignment="Top" Height="35" Width="25"  RenderTransformOrigin="0.48,0.375"    Style="{StaticResource cbStyle}"    DataContext="{Binding Usermodel.xActive}"/>
+                                                        <TextBox    x:Name="tbCardcode"     HorizontalAlignment="Left" Height="35" Margin="149,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" IsEnabled="False"   Style="{StaticResource tbSearch}"     DataContext="{Binding Usermodel.sOperatortag}" />
+                                                        <Image      x:Name="imgUser"        HorizontalAlignment="Left" Height="181" Margin="339,10,0,0" VerticalAlignment="Top" Width="92" Source="C:\Users\keese_000\Desktop\Sewco\Sewco2\Sewco\Sewco\Resources\Images\DefaultImage\user.png" Stretch="Fill" />
+
+                                                    </Grid>
+                                                </Grid>
+                                            </GroupBox>
+                                        </Grid>
                                     </Grid>
-
-
-
-
-
                                 </Grid>
                             </Grid>
                         </Border>
-
                     </StackPanel>
                 </Border>
                 <!--<Frame x:Name="Framecontent" Height="Auto" Width="Auto"/>-->
             </Grid>
         </Viewbox>
     </Grid>
-
 </UserControl>
