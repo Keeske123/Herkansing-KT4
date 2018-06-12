@@ -79,8 +79,6 @@
                                             <RowDefinition Height="50"/>
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-
-
                                     </Grid>
                                     <Grid Grid.Row="2">
                                         <Grid.ColumnDefinitions>
@@ -125,7 +123,7 @@
                                 </Grid.RowDefinitions>
                                 <GroupBox Grid.Row="0" Header="Select Profile"      Style="{StaticResource grpBoxStyle}">
                                     <Grid>
-                                        <ComboBox x:Name="cbSearch" HorizontalAlignment="Left" Height="35" Margin="111,6,0,0" VerticalAlignment="Top" Width="408" Style="{StaticResource cbbStyleDefault}" SelectionChanged="cbSearch_SelectionChanged"/>
+                                        <ComboBox x:Name="cbSearchProfiles" HorizontalAlignment="Left" Height="35" Margin="111,6,0,0" VerticalAlignment="Top" Width="408" Style="{StaticResource cbbStyleDefault}" SelectionChanged="cbSearch_SelectionChanged"/>
                                     </Grid>
                                 </GroupBox>
                                 <GroupBox x:Name="gbAddEditUserProfiles" Grid.Row="1" Margin="0,10,0,112" IsEnabled="False" Height="auto" Header="Add/Edit UsersProfiles" Style="{StaticResource grpBoxStyle}">
@@ -184,7 +182,7 @@
                 
             </StackPanel>
         </Border>
-        <Frame x:Name="Framecontent" Height="Auto" Width="Auto"/>
+        <!--<Frame x:Name="Framecontent" Height="Auto" Width="Auto"/>-->
     </Grid>
     
 </UserControl>

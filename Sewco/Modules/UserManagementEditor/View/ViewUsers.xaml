@@ -117,7 +117,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Button Grid.Row="0" x:Name="btnUsers" Content="Users"  Style="{StaticResource BtnCustom}" HorizontalAlignment="Left" FontSize="20" IsEnabled="False" Margin="10,10,10,10" />
-                                            <Button Grid.Row="1" x:Name="btnUserProfiles"   Content="User Profiles" Style="{StaticResource BtnCustom}"  HorizontalAlignment="Left" FontSize="20" IsEnabled="True"  Margin="10,10,10,10"/>
+                                            <Button Grid.Row="1" x:Name="btnUserProfiles"   Content="User Profiles" Style="{StaticResource BtnCustom}"  HorizontalAlignment="Left" FontSize="20" IsEnabled="True"  Margin="10,10,10,10" Click="btnUserProfiles_Click"/>
                                         </Grid>
                                     </Grid>
 
@@ -142,13 +142,13 @@
 
                                                 <Grid x:Name="gridSearch" Grid.Row="0">
                                                     <GroupBox x:Name="gbSearch" Header="Search" HorizontalAlignment="Center" Margin="10,10,10,-10" VerticalAlignment="Top" Width="343" Style="{Binding grpBoxStyle}">
-                                                        <TextBox x:Name="tbSearch" HorizontalAlignment="Center" Height="30" Margin="10,10,1,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="320" Style="{Binding tbSearch}"/>
+                                                        <TextBox x:Name="tbSearch" HorizontalAlignment="Center" Height="30" Margin="10,10,1,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="320" Style="{Binding tbSearch}" TextChanged="tbSearch_TextChanged"/>
                                                     </GroupBox>
                                                 </Grid>
 
                                                 <Grid Grid.Row="1" x:Name="gridListUsers" Margin="0,0,0,139">
                                                     <GroupBox x:Name="gbViewUsers" Header="View Users" Margin="10,21,10,-145">
-                                                        <ListBox x:Name="lvUsers" HorizontalAlignment="Left" Height="298" Margin="10,10,-1,0" VerticalAlignment="Top" Width="322" Style="{Binding _ListBoxItemStyle}"/>
+                                                        <ListBox x:Name="lvUsers" HorizontalAlignment="Left" Height="298" Margin="10,10,-1,0" VerticalAlignment="Top" Width="322" />
                                                     </GroupBox>
                                                 </Grid>
                                             </Grid>
@@ -220,7 +220,7 @@
                                         </Grid>
 
                                         <Grid Grid.Row="1">
-                                            <GroupBox x:Name="gbAddEditUsers" Margin="10,10,269,10" IsEnabled="False" Header="Add/Edit Users" Style="{StaticResource grpBoxStyle}" Visibility="Hidden">
+                                            <GroupBox x:Name="gbAddEditUsers" Margin="10,10,269,10" IsEnabled="True" Header="Add/Edit Users" Style="{StaticResource grpBoxStyle}" Visibility="Collapsed">
                                                 <Grid >
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="500"/>
@@ -250,7 +250,7 @@
                         </Border>
                     </StackPanel>
                 </Border>
-                <!--<Frame x:Name="Framecontent" Height="Auto" Width="Auto"/>-->
+                <Frame x:Name="Framecontent" Height="Auto" Width="Auto"/>
             </Grid>
         </Viewbox>
     </Grid>

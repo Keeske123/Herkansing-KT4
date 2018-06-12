@@ -22,7 +22,8 @@ namespace Sewco.Modules.UserManagementEditor
     /// </summary>
     public partial class ViewUserProfiles : System.Windows.Controls.UserControl
     {
-        LinqToSQLDataContext db = new LinqToSQLDataContext();
+        LinqToSQLDataContext db;
+        private string selectedProfile;
         string con, saveType;
 
         public ViewUserProfiles()
@@ -31,44 +32,12 @@ namespace Sewco.Modules.UserManagementEditor
 
             con = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C: \Users\keese_000\Desktop\AFSTUDEER STAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\KT4\REDO\Herkansing KT4\Herkansing - KT4\Sewco\UsermanagementDB.mdf;Integrated Security=True";
 
-            var query =
-                    from q in db.tbl_UserProfiles
-                    select q.Userprofile;
-
-            foreach (var q in query)
-            {
-                cbSearch.Items.Add(q);
-            }
+            db = new LinqToSQLDataContext(con);
         }
 
         private void btnCancelUserProfile_Click(object sender, RoutedEventArgs e)
         {
-            btnSaveUserProfile.IsEnabled = false;
-            btnCancelUserProfile.IsEnabled = false;
-            btnNewUserProfile.IsEnabled = true;
-            btnEditUserProfile.IsEnabled = true;
-            btnDeleteUserProfile.IsEnabled = true;
-
-            tbUserProfile.Text = "";
-
-            checkProductions.IsChecked = false;
-            checkMaintenance.IsChecked = false;
-            checkProductDef.IsChecked = false;
-            checkUsers.IsChecked = false;
-            checkMachineConfig.IsChecked = false;
-            checkReprint.IsChecked = false;
-            checkReset.IsChecked = false;
-            checkFind.IsChecked = false;
-            checkDesktop.IsChecked = false;
-            checkMaterials.IsChecked = false;
-            checkProductProfile.IsChecked = false;
-            checkLabelEditor.IsChecked = false;
-            checkBobbinMonitor.IsChecked = false;
-            checkBobbinTracing.IsChecked = false;
-
-            gbAddEditUserProfiles.IsEnabled = false;
-            tbUserProfile.IsEnabled = false;
-
+            ResetValues();
         }
 
         private void btnSaveUserProfile_Click(object sender, RoutedEventArgs e)
@@ -76,158 +45,86 @@ namespace Sewco.Modules.UserManagementEditor
             switch (saveType)
             {
                 case "New":
-                    #region Save New Profile
+                    SaveNewProfile();
 
-                    try
-                    {
-                        using (LinqToSQLDataContext db = new LinqToSQLDataContext(con))
-                        {
-                            tbl_UserProfile tbl = new tbl_UserProfile
-                            {
-                                Userprofile = tbUserProfile.Text,
-                                Productions = checkProductions.IsChecked.Value,
-                                Maintenance = checkMaintenance.IsChecked.Value,
-                                Products = checkProductDef.IsChecked.Value,
-                                Users = checkUsers.IsChecked.Value,
-                                MachineConfig = checkMachineConfig.IsChecked.Value,
-                                Reprint = checkReprint.IsChecked.Value,
-                                Reset = checkReset.IsChecked.Value,
-                                Find = checkFind.IsChecked.Value,
-                                Desktop = checkDesktop.IsChecked.Value,
-                                Materials = checkMaterials.IsChecked.Value,
-                                ProductProfile = checkProductProfile.IsChecked.Value,
-                                LabelEditor = checkLabelEditor.IsChecked.Value,
-                                BobbinMonitor = checkBobbinMonitor.IsChecked.Value,
-                                BobbinTracer = checkBobbinTracing.IsChecked.Value
-                            };
-
-                            db.tbl_UserProfiles.InsertOnSubmit(tbl);
-                            db.SubmitChanges();                            
-                        }
-
-                        #region Reset after Save
-
-                        cbSearch.Items.Clear();
-                        var refresh =
-                            from t in db.tbl_UserProfiles
-                            select t.Userprofile;
-                        foreach (var item in refresh)
-                        {
-                            cbSearch.Items.Add(item.ToString());
-                        }
-
-                        btnSaveUserProfile.IsEnabled = false;
-                        btnCancelUserProfile.IsEnabled = false;
-                        btnNewUserProfile.IsEnabled = true;
-                        btnEditUserProfile.IsEnabled = true;
-                        btnDeleteUserProfile.IsEnabled = true;
-
-                        tbUserProfile.Text = "";
-
-                        checkProductions.IsChecked = false;
-                        checkMaintenance.IsChecked = false;
-                        checkProductDef.IsChecked = false;
-                        checkUsers.IsChecked = false;
-                        checkMachineConfig.IsChecked = false;
-                        checkReprint.IsChecked = false;
-                        checkReset.IsChecked = false;
-                        checkFind.IsChecked = false;
-                        checkDesktop.IsChecked = false;
-                        checkMaterials.IsChecked = false;
-                        checkProductProfile.IsChecked = false;
-                        checkLabelEditor.IsChecked = false;
-                        checkBobbinMonitor.IsChecked = false;
-                        checkBobbinTracing.IsChecked = false;
-
-                        gbAddEditUserProfiles.IsEnabled = false;
-                        tbUserProfile.IsEnabled = false;
-
-                        #endregion
-                    }
-                    catch (Exception exc)
-                    {
-                        System.Windows.MessageBox.Show(exc.ToString());
-                    }
-
-                    #endregion
                     break;
                 case "Edit":
-                    #region Edit
+                    SaveEditProfile();
 
-                    var query =
-                        (from t in db.tbl_UserProfiles
-                         where t.Userprofile == tbUserProfile.Text
+
+                    break;
+            }
+        }
+
+        private void SaveEditProfile()
+        {
+            var query = (from t in db.tbl_UserProfiles
+                         where t.Userprofile == cbSearchProfiles.Text
                          select t).FirstOrDefault();
 
-                    query.Userprofile = tbUserProfile.Text;
-                    query.Productions = checkProductions.IsChecked.Value;
-                    query.Maintenance = checkMaintenance.IsChecked.Value;
-                    query.Products = checkProductDef.IsChecked.Value;
-                    query.Users = checkUsers.IsChecked.Value;
-                    query.MachineConfig = checkMachineConfig.IsChecked.Value;
-                    query.Reprint = checkReprint.IsChecked.Value;
-                    query.Reset = checkReset.IsChecked.Value;
-                    query.Find = checkFind.IsChecked.Value;
-                    query.Desktop = checkDesktop.IsChecked.Value;
-                    query.Materials = checkMaterials.IsChecked.Value;
-                    query.ProductProfile = checkProductProfile.IsChecked.Value;
-                    query.LabelEditor = checkLabelEditor.IsChecked.Value;
-                    query.BobbinMonitor = checkBobbinMonitor.IsChecked.Value;
-                    query.BobbinTracer = checkBobbinTracing.IsChecked.Value;
+            query.Userprofile = tbUserProfile.Text;
+            query.Productions = checkProductions.IsChecked.Value;
+            query.Maintenance = checkMaintenance.IsChecked.Value;
+            query.Products = checkProductDef.IsChecked.Value;
+            query.Users = checkUsers.IsChecked.Value;
+            query.MachineConfig = checkMachineConfig.IsChecked.Value;
+            query.Reprint = checkReprint.IsChecked.Value;
+            query.Reset = checkReset.IsChecked.Value;
+            query.Find = checkFind.IsChecked.Value;
+            query.Desktop = checkDesktop.IsChecked.Value;
+            query.Materials = checkMaterials.IsChecked.Value;
+            query.ProductProfile = checkProductProfile.IsChecked.Value;
+            query.LabelEditor = checkLabelEditor.IsChecked.Value;
+            query.BobbinMonitor = checkBobbinMonitor.IsChecked.Value;
+            query.BobbinTracer = checkBobbinTracing.IsChecked.Value;
 
-                    db.SubmitChanges();
+            db.SubmitChanges();
 
-                    var table =
-                        from q in db.tbl_UserProfiles
-                        select q.Userprofile;
+            ResetValues();
+        }
 
-                    //clear out old selection
-                    cbSearch.Items.Clear();
-
-                    //fill combobox with new/updated version of the database
-                    foreach (var q in table)
+        private void SaveNewProfile()
+        {
+            try
+            {
+                using (LinqToSQLDataContext db = new LinqToSQLDataContext(con))
+                {
+                    tbl_UserProfile tbl = new tbl_UserProfile
                     {
-                        cbSearch.Items.Add(q);
-                    }
+                        Userprofile = tbUserProfile.Text,
+                        Productions = checkProductions.IsChecked.Value,
+                        Maintenance = checkMaintenance.IsChecked.Value,
+                        Products = checkProductDef.IsChecked.Value,
+                        Users = checkUsers.IsChecked.Value,
+                        MachineConfig = checkMachineConfig.IsChecked.Value,
+                        Reprint = checkReprint.IsChecked.Value,
+                        Reset = checkReset.IsChecked.Value,
+                        Find = checkFind.IsChecked.Value,
+                        Desktop = checkDesktop.IsChecked.Value,
+                        Materials = checkMaterials.IsChecked.Value,
+                        ProductProfile = checkProductProfile.IsChecked.Value,
+                        LabelEditor = checkLabelEditor.IsChecked.Value,
+                        BobbinMonitor = checkBobbinMonitor.IsChecked.Value,
+                        BobbinTracer = checkBobbinTracing.IsChecked.Value
+                    };
 
-                    #endregion
+                    db.tbl_UserProfiles.InsertOnSubmit(tbl);
+                    db.SubmitChanges();
+                }
 
-                    #region Reset after Save
-
-                    btnSaveUserProfile.IsEnabled = false;
-                    btnCancelUserProfile.IsEnabled = false;
-                    btnNewUserProfile.IsEnabled = true;
-                    btnEditUserProfile.IsEnabled = true;
-                    btnDeleteUserProfile.IsEnabled = true;
-
-                    tbUserProfile.Text = "";
-
-                    checkProductions.IsChecked = false;
-                    checkMaintenance.IsChecked = false;
-                    checkProductDef.IsChecked = false;
-                    checkUsers.IsChecked = false;
-                    checkMachineConfig.IsChecked = false;
-                    checkReprint.IsChecked = false;
-                    checkReset.IsChecked = false;
-                    checkFind.IsChecked = false;
-                    checkDesktop.IsChecked = false;
-                    checkMaterials.IsChecked = false;
-                    checkProductProfile.IsChecked = false;
-                    checkLabelEditor.IsChecked = false;
-                    checkBobbinMonitor.IsChecked = false;
-                    checkBobbinTracing.IsChecked = false;
-
-                    gbAddEditUserProfiles.IsEnabled = false;
-                    tbUserProfile.IsEnabled = false;
-                    #endregion
-                    break;
+                ResetValues();
+            }
+            catch (Exception exc)
+            {
+                System.Windows.MessageBox.Show("Something went wrong While Adding this user");
             }
         }
 
         private void btnEditUserProfile_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("Needs Some Fixing");
             saveType = "Edit";
+            selectedProfile = cbSearchProfiles.Text;
+
             btnSaveUserProfile.IsEnabled = true;
             btnCancelUserProfile.IsEnabled = true;
             btnNewUserProfile.IsEnabled = false;
@@ -240,38 +137,14 @@ namespace Sewco.Modules.UserManagementEditor
         {
             saveType = "New";
 
-            tbUserProfile.Text = "";
-
-            checkProductions.IsChecked = false;
-            checkMaintenance.IsChecked = false;
-            checkProductDef.IsChecked = false;
-            checkUsers.IsChecked = false;
-            checkMachineConfig.IsChecked = false;
-            checkReprint.IsChecked = false;
-            checkReset.IsChecked = false;
-            checkFind.IsChecked = false;
-            checkDesktop.IsChecked = false;
-            checkMaterials.IsChecked = false;
-            checkProductProfile.IsChecked = false;
-            checkLabelEditor.IsChecked = false;
-            checkBobbinMonitor.IsChecked = false;
-            checkBobbinTracing.IsChecked = false;
-
-            btnSaveUserProfile.IsEnabled = true;
-            btnCancelUserProfile.IsEnabled = true;
-            btnNewUserProfile.IsEnabled = false;
-            btnEditUserProfile.IsEnabled = false;
-            btnDeleteUserProfile.IsEnabled = false;
-
-            gbAddEditUserProfiles.IsEnabled = true;
-            tbUserProfile.IsEnabled = true;
+            
         }
 
         private void btnUsers_Click(object sender, RoutedEventArgs e)
         {
-            this.DataContext = new ViewModelUsers();
-            Framecontent.Source = null;
-            Framecontent.Source = new Uri("/Modules/UserManagementEditor/View/ViewUsers.xaml", UriKind.Relative);
+            //this.DataContext = new ViewModelUsers();
+            //Framecontent.Source = null;
+            //Framecontent.Source = new Uri("/Modules/UserManagementEditor/View/ViewUsers.xaml", UriKind.Relative);
         }
 
         private void btnDeleteUserProfile_Click(object sender, RoutedEventArgs e)
@@ -284,14 +157,14 @@ namespace Sewco.Modules.UserManagementEditor
                 {
                     SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C: \Users\keese_000\Desktop\AFSTUDEER STAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\KT4\REDO\Herkansing KT4\Herkansing - KT4\Sewco\UsermanagementDB.mdf;Integrated Security=True");
                     con.Open();
-                    SqlCommand cmd = new SqlCommand("DELETE FROM tbl_UserProfiles WHERE Userprofile='" + cbSearch + "'", con);
+                    SqlCommand cmd = new SqlCommand("DELETE FROM tbl_UserProfiles WHERE Userprofile='" + cbSearchProfiles.Text + "'", con);
                     cmd.ExecuteNonQuery();
                     con.Close();
                 }
                 catch (Exception exc)
                 {
                     System.Windows.Forms.MessageBox.Show(exc.ToString());
-                }                
+                }
             }
         }
 
@@ -329,6 +202,53 @@ namespace Sewco.Modules.UserManagementEditor
                 checkLabelEditor.IsChecked = q.LabelEditor;
                 checkBobbinMonitor.IsChecked = q.BobbinMonitor;
                 checkBobbinTracing.IsChecked = q.BobbinTracer;
+            }
+        }
+
+        private void ResetValues()
+        {
+            LoadProfiles();
+
+            btnSaveUserProfile.IsEnabled = false;
+            btnCancelUserProfile.IsEnabled = false;
+            btnNewUserProfile.IsEnabled = true;
+            btnEditUserProfile.IsEnabled = true;
+            btnDeleteUserProfile.IsEnabled = true;
+
+            tbUserProfile.Text = "";
+
+            checkProductions.IsChecked = false;
+            checkMaintenance.IsChecked = false;
+            checkProductDef.IsChecked = false;
+            checkUsers.IsChecked = false;
+            checkMachineConfig.IsChecked = false;
+            checkReprint.IsChecked = false;
+            checkReset.IsChecked = false;
+            checkFind.IsChecked = false;
+            checkDesktop.IsChecked = false;
+            checkMaterials.IsChecked = false;
+            checkProductProfile.IsChecked = false;
+            checkLabelEditor.IsChecked = false;
+            checkBobbinMonitor.IsChecked = false;
+            checkBobbinTracing.IsChecked = false;
+
+            gbAddEditUserProfiles.IsEnabled = false;
+            tbUserProfile.IsEnabled = false;
+
+            selectedProfile = "";
+        }
+
+        private void LoadProfiles()
+        {
+            cbSearchProfiles.Items.Clear();
+
+            var query =
+                   from q in db.tbl_UserProfiles
+                   select q.Userprofile;
+
+            foreach (var q in query)
+            {
+                cbSearchProfiles.Items.Add(q);
             }
         }
     }
