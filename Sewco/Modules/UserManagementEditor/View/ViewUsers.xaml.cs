@@ -32,7 +32,7 @@ namespace Sewco.Modules.UserManagementEditor
         {
             InitializeComponent();
 
-            con = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\keese_000\Desktop\AFSTUDEER STAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\KT4\REDO\Herkansing KT4\Herkansing - KT4\Sewco\UsermanagementDB.mdf;Integrated Security=True";
+            con = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\keese_000\Desktop\AFSTUDEER STAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\KT4\REDO\Herkansing KT4\Herkansing-KT4\Sewco\UsermanagementDB.mdf;Integrated Security=True";
 
             ViewModelUsers ViewModelUsers = new ViewModelUsers();
             DataContext = ViewModelUsers;
@@ -99,28 +99,14 @@ namespace Sewco.Modules.UserManagementEditor
                 var tempDB = new LinqToSQLDataContext(con);
 
                 var query =
-                    from q in tempDB.tbl_Users
-                     select q;
+                (from q in tempDB.tbl_Users
+                 select new { Name = q.Name, Rights = q.Rights, Operatortag = q.Operatortag, Active = q.Active, Cardcode = q.CardCode }).ToList();
 
-                foreach (var item in query)
-                {
-                    string isActive;
-
-                    if (!item.Active)
-                    {
-                        isActive = "Not active";
-                    }
-                    else
-                    {
-                        isActive = "Active";
-                    }
-
-                    lvUsers.Items.Add(String.Format(item.Name.ToUpper() + ", " + item.Operatortag + "\n" + item.Rights + "\n" + isActive));
-                }
+                lvUsers.ItemsSource = query;
             }
-            catch
+            catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Something went wrong while Loading users into the Listview");
+                System.Windows.MessageBox.Show(ex.ToString(), "Something went wrong while Loading users into the Listview");
             }
         }
 
