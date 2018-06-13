@@ -148,13 +148,13 @@
 
                                                 <Grid Grid.Row="1" x:Name="gridListUsers" Margin="0,0,0,139">
                                                     <GroupBox x:Name="gbViewUsers" Header="View Users" Margin="10,21,10,-145">
-                                                        <ListBox x:Name="lvUsers" HorizontalAlignment="Left" Height="298" Margin="10,10,-1,0" VerticalAlignment="Top" Width="322" />
+                                                        <ListBox x:Name="lvUsers" HorizontalAlignment="Left" Height="298" Margin="10,10,-1,0" VerticalAlignment="Top" Width="322" MouseLeftButtonUp="lvUsers_MouseLeftButtonUp"/>
                                                     </GroupBox>
                                                 </Grid>
                                             </Grid>
 
                                             <Grid Grid.Column="1">
-                                                <GroupBox x:Name="gbDetails" Header="More Details" HorizontalAlignment="Left" Height="390" Margin="10,10,0,0" VerticalAlignment="Top" Width="258" IsEnabled="False" Visibility="Collapsed">
+                                                <GroupBox x:Name="gbDetails" Header="More Details" HorizontalAlignment="Left" Height="390" Margin="10,10,0,0" VerticalAlignment="Top" Width="258" IsEnabled="False" Visibility="Visible">
                                                     <Grid>
                                                         <Grid.RowDefinitions>
                                                             <RowDefinition Height="*"/>
@@ -167,11 +167,13 @@
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
 
-                                                            <Grid Grid.Column="0">
-                                                                <Image HorizontalAlignment="Left" Height="164" Margin="10,10,0,0" VerticalAlignment="Top" Width="78" Source="/Sewco;component/Resources/Images/DefaultImage/user.png" Stretch="Fill" />
-                                                            </Grid>
+                                                            <!--<Grid Grid.Column="0" Visibility=">
+                                                                <Border BorderBrush="black" BorderThickness="1">
+                                                                    <Image HorizontalAlignment="Left" Height="164" Margin="10,10,0,0" VerticalAlignment="Top" Width="78" Source="/Sewco;component/Resources/Images/DefaultImage/user.png" Stretch="Fill" />
+                                                                </Border>
+                                                            </Grid>-->
 
-                                                            <Grid Grid.Column="1">
+                                                            <Grid Grid.Column="0">
                                                                 <Label x:Name="lblMoreName"         Content="Name:"      HorizontalAlignment="Left" Margin="10,10,0,0"  VerticalAlignment="Top"/>
                                                                 <Label x:Name="lblMoreTag"          Content="Tag:"       HorizontalAlignment="Left" Margin="10,41,0,0"  VerticalAlignment="Top"/>
                                                                 <Label x:Name="lblMoreRights"       Content="Rights:"    HorizontalAlignment="Left" Margin="10,72,0,0"  VerticalAlignment="Top"/>

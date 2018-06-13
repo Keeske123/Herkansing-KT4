@@ -25,14 +25,16 @@ namespace Sewco.Modules.UserManagementEditor
         LinqToSQLDataContext db;
         private string selectedProfile;
         string con, saveType;
+        private bool isDeleting;
 
         public ViewUserProfiles()
         {
             InitializeComponent();
 
-            con = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C: \Users\keese_000\Desktop\AFSTUDEER STAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\KT4\REDO\Herkansing KT4\Herkansing - KT4\Sewco\UsermanagementDB.mdf;Integrated Security=True";
+            con = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\keese_000\Desktop\AFSTUDEER STAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\KT4\REDO\Herkansing KT4\Herkansing-KT4\Sewco\UsermanagementDB.mdf;Integrated Security=True";
 
             db = new LinqToSQLDataContext(con);
+            LoadProfiles();
         }
 
         private void btnCancelUserProfile_Click(object sender, RoutedEventArgs e)
@@ -50,11 +52,112 @@ namespace Sewco.Modules.UserManagementEditor
                     break;
                 case "Edit":
                     SaveEditProfile();
-
-
                     break;
             }
         }
+
+        private void btnEditUserProfile_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbSearchProfiles.SelectedItem != null || cbSearchProfiles.SelectedItem != null)
+            {
+                saveType = "Edit";
+                selectedProfile = cbSearchProfiles.Text;
+
+                btnSaveUserProfile.IsEnabled = true;
+                btnCancelUserProfile.IsEnabled = true;
+                btnNewUserProfile.IsEnabled = false;
+                btnEditUserProfile.IsEnabled = false;
+                btnDeleteUserProfile.IsEnabled = false;
+
+                gbSearch.IsEnabled = false;
+
+                gbAddEditUserProfiles.IsEnabled = true;
+            }
+        }
+
+        private void btnNewUserProfile_Click(object sender, RoutedEventArgs e)
+        {
+            saveType = "New";
+
+            btnSaveUserProfile.IsEnabled = true;
+            btnCancelUserProfile.IsEnabled = true;
+            btnNewUserProfile.IsEnabled = false;
+            btnEditUserProfile.IsEnabled = false;
+            btnDeleteUserProfile.IsEnabled = false;
+
+            gbSearch.IsEnabled = false;
+            
+            gbAddEditUserProfiles.IsEnabled = true;
+        }
+
+        private void btnUsers_Click(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = new ViewModelUsers();
+            Framecontent.Source = null;
+            Framecontent.Source = new Uri("/Modules/UserManagementEditor/View/ViewUsers.xaml", UriKind.Relative);
+        }
+
+        private void btnDeleteUserProfile_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (cbSearchProfiles.SelectedItem != null || cbSearchProfiles.SelectedItem != null)
+                if (System.Windows.MessageBox.Show("Do you really want to DELETE this Userprofile?", "Attention", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    DeleteProfile(cbSearchProfiles.SelectedItem.ToString());
+                else
+                    System.Windows.MessageBox.Show("Select a User First");
+
+        }
+
+        private void cbSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (!isDeleting) //failsafe
+            {
+                db = new LinqToSQLDataContext(con);
+
+                var selectProfile =
+                    from q in db.tbl_UserProfiles
+                    where q.Userprofile == cbSearchProfiles.SelectedItem.ToString()
+                    select q;
+
+                var selectUsers =
+                    (from q in db.tbl_Users
+                     where q.Rights == cbSearchProfiles.SelectedItem.ToString()
+                     select new { Name = q.Name, Operatortag = q.Operatortag, Active = q.Active, Cardcode = q.CardCode }).ToList();
+
+                lvUsers.Items.Clear();
+
+                foreach (var item in selectUsers)
+                {
+                    lvUsers.Items.Add(String.Format("Name: {0}, Operatortag: {1}, \nActive: {2}, Cardcode: None Assigned\n", item.Name, item.Operatortag, item.Active.ToString()));
+                }
+
+                foreach (var q in selectProfile)
+                {
+                    tbUserProfile.Text = q.Userprofile;
+
+                    checkProductions.IsChecked = q.Productions;
+                    checkMaintenance.IsChecked = q.Maintenance;
+                    checkProductDef.IsChecked = q.Products;
+                    checkUsers.IsChecked = q.Users;
+                    checkMachineConfig.IsChecked = q.MachineConfig;
+                    checkReprint.IsChecked = q.Reprint;
+                    checkReset.IsChecked = q.Reset;
+                    checkFind.IsChecked = q.Find;
+                    checkDesktop.IsChecked = q.Desktop;
+                    checkMaterials.IsChecked = q.Materials;
+                    checkProductProfile.IsChecked = q.ProductProfile;
+                    checkLabelEditor.IsChecked = q.LabelEditor;
+                    checkBobbinMonitor.IsChecked = q.BobbinMonitor;
+                    checkBobbinTracing.IsChecked = q.BobbinTracer;
+                }
+            }
+            else
+            {
+                isDeleting = false; //Done deleting the Profile
+            }
+        }
+
 
         private void SaveEditProfile()
         {
@@ -120,90 +223,31 @@ namespace Sewco.Modules.UserManagementEditor
             }
         }
 
-        private void btnEditUserProfile_Click(object sender, RoutedEventArgs e)
+        private void DeleteProfile(string selectedProfile)
         {
-            saveType = "Edit";
-            selectedProfile = cbSearchProfiles.Text;
-
-            btnSaveUserProfile.IsEnabled = true;
-            btnCancelUserProfile.IsEnabled = true;
-            btnNewUserProfile.IsEnabled = false;
-            btnEditUserProfile.IsEnabled = false;
-            btnDeleteUserProfile.IsEnabled = false;
-            gbAddEditUserProfiles.IsEnabled = true;
-        }
-
-        private void btnNewUserProfile_Click(object sender, RoutedEventArgs e)
-        {
-            saveType = "New";
-
-            
-        }
-
-        private void btnUsers_Click(object sender, RoutedEventArgs e)
-        {
-            //this.DataContext = new ViewModelUsers();
-            //Framecontent.Source = null;
-            //Framecontent.Source = new Uri("/Modules/UserManagementEditor/View/ViewUsers.xaml", UriKind.Relative);
-        }
-
-        private void btnDeleteUserProfile_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult dr = System.Windows.Forms.MessageBox.Show("Do You Want to Delete this User?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-            if (dr == DialogResult.Yes)
+            try
             {
-                try
+                var db = new LinqToSQLDataContext(con);
+
+                var selectProfile = from sp in db.tbl_UserProfiles
+                                    where sp.Userprofile == selectedProfile
+                                    select sp;
+
+                foreach (var item in selectProfile)
                 {
-                    SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C: \Users\keese_000\Desktop\AFSTUDEER STAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\KT4\REDO\Herkansing KT4\Herkansing - KT4\Sewco\UsermanagementDB.mdf;Integrated Security=True");
-                    con.Open();
-                    SqlCommand cmd = new SqlCommand("DELETE FROM tbl_UserProfiles WHERE Userprofile='" + cbSearchProfiles.Text + "'", con);
-                    cmd.ExecuteNonQuery();
-                    con.Close();
+                    db.tbl_UserProfiles.DeleteOnSubmit(item);
                 }
-                catch (Exception exc)
-                {
-                    System.Windows.Forms.MessageBox.Show(exc.ToString());
-                }
+
+                db.SubmitChanges();
+                isDeleting = true;
+                ResetValues();
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Something went wrong while Deleting the Profile");
             }
         }
 
-        private void cbSearch_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            db = new LinqToSQLDataContext();
-            var query =
-                from q in db.tbl_UserProfiles
-                where q.Userprofile == cbSearch.SelectedItem.ToString()
-                select q;
-
-            var table =
-                from t in db.tbl_Users
-                where t.Rights == cbSearch.SelectedItem.ToString()
-                select t;
-
-            dgUsers.ItemsSource = table;
-
-            foreach (var q in query)
-            {
-                tbUserProfile.Text = q.Userprofile;
-
-                checkProductions.IsChecked = q.Productions;
-                checkMaintenance.IsChecked = q.Maintenance;
-                checkProductDef.IsChecked = q.Products;
-                checkUsers.IsChecked = q.Users;
-                checkMachineConfig.IsChecked = q.MachineConfig;
-                checkReprint.IsChecked = q.Reprint;
-                checkReset.IsChecked = q.Reset;
-                checkFind.IsChecked = q.Find;
-                checkDesktop.IsChecked = q.Desktop;
-                checkMaterials.IsChecked = q.Materials;
-                checkProductProfile.IsChecked = q.ProductProfile;
-                checkLabelEditor.IsChecked = q.LabelEditor;
-                checkBobbinMonitor.IsChecked = q.BobbinMonitor;
-                checkBobbinTracing.IsChecked = q.BobbinTracer;
-            }
-        }
 
         private void ResetValues()
         {
@@ -233,6 +277,7 @@ namespace Sewco.Modules.UserManagementEditor
             checkBobbinTracing.IsChecked = false;
 
             gbAddEditUserProfiles.IsEnabled = false;
+            gbSearch.IsEnabled = true;
             tbUserProfile.IsEnabled = false;
 
             selectedProfile = "";
@@ -240,6 +285,7 @@ namespace Sewco.Modules.UserManagementEditor
 
         private void LoadProfiles()
         {
+            cbSearchProfiles.Text = "";
             cbSearchProfiles.Items.Clear();
 
             var query =

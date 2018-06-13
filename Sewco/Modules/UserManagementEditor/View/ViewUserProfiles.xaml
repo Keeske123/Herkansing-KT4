@@ -99,7 +99,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="725"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="500"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="600"/>
@@ -121,11 +121,13 @@
                                     <RowDefinition Height="50"/>
                                     <RowDefinition Height="350"/>
                                 </Grid.RowDefinitions>
-                                <GroupBox Grid.Row="0" Header="Select Profile"      Style="{StaticResource grpBoxStyle}">
+                                
+                                <GroupBox x:Name="gbSearch"  Grid.Row="0" Header="Select Profile"      Style="{StaticResource grpBoxStyle}">
                                     <Grid>
                                         <ComboBox x:Name="cbSearchProfiles" HorizontalAlignment="Left" Height="35" Margin="111,6,0,0" VerticalAlignment="Top" Width="408" Style="{StaticResource cbbStyleDefault}" SelectionChanged="cbSearch_SelectionChanged"/>
                                     </Grid>
                                 </GroupBox>
+                                
                                 <GroupBox x:Name="gbAddEditUserProfiles" Grid.Row="1" Margin="0,10,0,112" IsEnabled="False" Height="auto" Header="Add/Edit UsersProfiles" Style="{StaticResource grpBoxStyle}">
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -138,26 +140,26 @@
                                             <ColumnDefinition Width="300"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid Grid.Row="0">
-                                            <TextBox x:Name="tbUserProfile" Style="{StaticResource tbSearch}" Margin="110,6,-220,1" HorizontalAlignment="Center" Width="410" IsEnabled="False"/>
+                                            <TextBox x:Name="tbUserProfile" Style="{StaticResource tbxStandard}" Margin="110,6,-220,1" HorizontalAlignment="Center" Width="410"/>
                                         </Grid>
                                         <Grid Grid.Row="1" Grid.Column="0" Margin="0,3,0,-3" Height="auto">
-                                            <CheckBox x:Name="checkProductions" Content="Productions" HorizontalAlignment="Right" VerticalAlignment="Top"       Margin="6,10,86,0" Width="auto" />
-                                            <CheckBox x:Name="checkMachineConfig" Content="Machine Config" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="6,30,59,0" Width="auto" />
-                                            <CheckBox x:Name="checkProductDef" Content="Product Definition" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6,50,40,0" Width="auto" />
-                                            <CheckBox x:Name="checkUsers" Content="Users" HorizontalAlignment="Right" VerticalAlignment="Top"                   Margin="6,70,130,0" Width="auto" />
-                                            <CheckBox x:Name="checkReset" Content="Reset" HorizontalAlignment="Right" VerticalAlignment="Top"                   Margin="6,130,132,0" Width="auto" />
-                                            <CheckBox x:Name="checkReprint" Content="Reprint" HorizontalAlignment="Right" VerticalAlignment="Top"               Margin="6,110,118,0" Width="auto" />
-                                            <CheckBox x:Name="checkMaintenance" Content="Maintenance" HorizontalAlignment="Right" VerticalAlignment="Top"       Margin="6,90,78,0" Width="auto" />
+                                            <CheckBox x:Name="checkProductions" Content="Productions" HorizontalAlignment="Right" VerticalAlignment="Top"       Margin="0,10,86,0" Width="auto" />
+                                            <CheckBox x:Name="checkMachineConfig" Content="Machine Config" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,30,59,0" Width="auto" />
+                                            <CheckBox x:Name="checkProductDef" Content="Product Definition" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,41,0" Width="auto" />
+                                            <CheckBox x:Name="checkUsers" Content="Users" HorizontalAlignment="Right" VerticalAlignment="Top"                   Margin="0,70,131,0" Width="auto" />
+                                            <CheckBox x:Name="checkReset" Content="Reset" HorizontalAlignment="Right" VerticalAlignment="Top"                   Margin="0,130,132,0" Width="auto" />
+                                            <CheckBox x:Name="checkReprint" Content="Reprint" HorizontalAlignment="Right" VerticalAlignment="Top"               Margin="0,110,119,0" Width="auto" />
+                                            <CheckBox x:Name="checkMaintenance" Content="Maintenance" HorizontalAlignment="Right" VerticalAlignment="Top"       Margin="0,90,79,0" Width="auto" />
 
                                         </Grid>
                                         <Grid Grid.Row="1" Grid.Column="1">
-                                            <CheckBox x:Name="checkFind"  Content="Find" HorizontalAlignment="Center" VerticalAlignment="Top"                     Margin="10,10,135,0"   />
-                                            <CheckBox x:Name="checkDesktop"  Content="Desktop" HorizontalAlignment="Center" VerticalAlignment="Top"               Margin="10,30,106,0"   />
-                                            <CheckBox x:Name="checkMaterials"  Content="Materials" HorizontalAlignment="Center" VerticalAlignment="Top"           Margin="10,50,100,0"   />
-                                            <CheckBox x:Name="checkProductProfile"  Content="Product Profile" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,70,60,0"   />
-                                            <CheckBox x:Name="checkLabelEditor"  Content="Label Editor" HorizontalAlignment="Center" VerticalAlignment="Top"        Margin="10,90,82,0" />
-                                            <CheckBox x:Name="checkBobbinMonitor"  Content="Bobbin Monitor" HorizontalAlignment="Center" VerticalAlignment="Top"    Margin="10,110,53,0" />
-                                            <CheckBox x:Name="checkBobbinTracing"  Content="Bobbin Tracing" HorizontalAlignment="Center" VerticalAlignment="Top"    Margin="10,130,60,0" />
+                                            <CheckBox x:Name="checkFind"  Content="Find" HorizontalAlignment="Center" VerticalAlignment="Top"                     Margin="63,10,188,0"   />
+                                            <CheckBox x:Name="checkDesktop"  Content="Desktop" HorizontalAlignment="Center" VerticalAlignment="Top"               Margin="64,30,159,0"   />
+                                            <CheckBox x:Name="checkMaterials"  Content="Materials" HorizontalAlignment="Center" VerticalAlignment="Top"           Margin="64,50,151,0"   />
+                                            <CheckBox x:Name="checkProductProfile"  Content="Product Profile" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="64,70,111,0"   />
+                                            <CheckBox x:Name="checkLabelEditor"  Content="Label Editor" HorizontalAlignment="Center" VerticalAlignment="Top"        Margin="64,90,133,0" />
+                                            <CheckBox x:Name="checkBobbinMonitor"  Content="Bobbin Monitor" HorizontalAlignment="Center" VerticalAlignment="Top"    Margin="64,110,105,0" />
+                                            <CheckBox x:Name="checkBobbinTracing"  Content="Bobbin Tracing" HorizontalAlignment="Center" VerticalAlignment="Top"    Margin="64,130,111,0" />
                                         </Grid>
                                     </Grid>
                                 </GroupBox>
@@ -169,9 +171,18 @@
                                     <RowDefinition Height="300"/>
                                 </Grid.RowDefinitions>
                                 <GroupBox Margin="10,0" Height="395" VerticalAlignment="Top" Header="Rights given to" Grid.RowSpan="2" Style="{StaticResource grpBoxStyle}">
-                                    <Grid IsEnabled="False">
-                                        <DataGrid x:Name="dgUsers"/>
-
+                                    <Grid IsEnabled="True">
+                                        <ListBox x:Name="lvUsers">
+                                            <ListBox.Style>
+                                                <Style TargetType="ListBox">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsKeyboardFocusWithin" Value="true">
+                                                            <Setter Property="IsSelected" Value="False" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ListBox.Style>
+                                        </ListBox>
 
                                     </Grid>
                                 </GroupBox>
@@ -182,7 +193,7 @@
                 
             </StackPanel>
         </Border>
-        <!--<Frame x:Name="Framecontent" Height="Auto" Width="Auto"/>-->
+        <Frame x:Name="Framecontent" Height="Auto" Width="Auto"/>
     </Grid>
     
 </UserControl>

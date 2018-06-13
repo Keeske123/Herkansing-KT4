@@ -38,6 +38,8 @@ namespace Sewco.Modules.UserManagementEditor
             DataContext = ViewModelUsers;
             db = new LinqToSQLDataContext(con);
 
+            
+
             LoadUsers();
         }
 
@@ -120,9 +122,7 @@ namespace Sewco.Modules.UserManagementEditor
             {
                 if (System.Windows.MessageBox.Show("Do you really want to DELETE this User?", "Attention", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
-                    gbAddEditUsers.IsEnabled = true;
                     string selectedUser = lvUsers.SelectedItem.ToString().Split(',')[0].Remove(0, 6);
-
                     DeleteUser(selectedUser);
                 }
             }
@@ -291,6 +291,48 @@ namespace Sewco.Modules.UserManagementEditor
             btnDeleteUser.IsEnabled = true;
             btnSaveUser.IsEnabled = false;
             btnCancelUser.IsEnabled = false;
+        }
+
+        private void lvUsers_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            LoadDetailedUser(lvUsers.SelectedItem.ToString().Split(',')[0].Remove(0, 6));
+        }
+
+        private void LoadDetailedUser(string user)
+        {
+            gbDetails.Visibility = Visibility.Visible;
+
+            var selectUser = (from q in db.tbl_Users
+                              where q.Name == user
+                              select q).SingleOrDefault();
+
+            tbMoreTag.Text = selectUser.Operatortag;
+            tbMoreName.Text = selectUser.Name;
+            tbMoreRights.Text = selectUser.Rights;
+            checkMoreActive.IsChecked = selectUser.Active;
+            tbMoreCardCode.Text = selectUser.CardCode;
+
+            var selectProfile = from q in db.tbl_UserProfiles
+                                where q.Userprofile == tbMoreRights.Text
+                                select q;
+
+            foreach (var q in selectProfile)
+            {
+                checkProductions.IsChecked = q.Productions;
+                checkMaintenance.IsChecked = q.Maintenance;
+                checkProducts.IsChecked = q.Products;
+                checkUsers.IsChecked = q.Users;
+                checkMachineconfig.IsChecked = q.MachineConfig;
+                checkReprint.IsChecked = q.Reprint;
+                checkReset.IsChecked = q.Reset;
+                checkFind.IsChecked = q.Find;
+                checkDesktop.IsChecked = q.Desktop;
+                checkMaterials.IsChecked = q.Materials;
+                checkProductprofile.IsChecked = q.ProductProfile;
+                checkLabeleditor.IsChecked = q.LabelEditor;
+                checkBobbinmonitor.IsChecked = q.BobbinMonitor;
+                checkBobbintracer.IsChecked = q.BobbinTracer;
+            }
         }
 
         private void LoadUsers()
